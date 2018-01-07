@@ -66,7 +66,10 @@
         },
     })
 
-    grunt.registerTask('default', ['clean', 'copy:screeps', 'file_append:versioning', 'screeps']);
+    grunt.registerTask('default', ['clean', 'copy:screeps']);
+    grunt.registerTask('commit', ['clean', 'copy:screeps', 'file_append:versioning', 'screeps']);
+
+
 }
 
 /*
