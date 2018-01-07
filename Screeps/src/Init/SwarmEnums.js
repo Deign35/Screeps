@@ -45,10 +45,11 @@ const Enums = {
         Complete: 'COMPLETE',
     },
 
-    ContractResults_Enum: {
+    TaskResults_Enum: {
         Complete: 'COMPLETE',
-        Incomplete: 'INCOMPLETE',
         ContractorRequired: 'CONTRACTOR',
+        Incomplete: 'INCOMPLETE',
+        NextCommand: 'NEXT',
     },
 
     CallbackType_Enum: {
@@ -86,21 +87,6 @@ const Enums = {
         Upgrader: 'upgrader',
         Sweeper: 'sweeper',
     },
-
-    /*
-    CreepJob_Enum: {
-        Worker: 'worker',
-        Harvester: 'harvester',
-        Carrier: 'carrier',
-        AllPurpose: 'allPurpose',
-        Repairer: 'repairer',
-
-        // War jobs
-        Guard: 'guard',
-        Archer: 'archer',
-        Healer: 'healer',
-        WarCarrier: 'warCarrier',
-    },*/
 };
 
 for (let enumType in Enums) {

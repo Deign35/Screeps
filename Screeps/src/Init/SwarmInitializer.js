@@ -1,5 +1,6 @@
 require('Init_SwarmEnums');
 require('Init_SwarmConsts');
+require('Init_SwarmObjects');
 require('Init_Globals');
 require('Init_Prototypes');
 

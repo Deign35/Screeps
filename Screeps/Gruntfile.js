@@ -74,9 +74,9 @@
 
 /*
 npm install -g grunt-cli
-npm install grunt-screeps
-npm install grunt-contrib-clean --save-dev
-npm install grunt-contrib-copy --save-dev
-npm install grunt-file-append --save-dev
-npm install grunt-jsbeautifier --save-dev
+.npm install grunt-screeps
+.npm install grunt-contrib-clean --save-dev
+.npm install grunt-contrib-copy --save-dev
+.npm install grunt-file-append --save-dev
+.npm install grunt-jsbeautifier --save-dev
 */

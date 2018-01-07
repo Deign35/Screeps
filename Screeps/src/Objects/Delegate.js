@@ -1,8 +1,10 @@
-const Delegate = function Delegate(callbackType, callbackId, callbackFunction) {
-    this.CallbackType = callbackType;
-    this.Callback = callbackFunction;
-    this.CallbackId = callbackId;
-};
+class Delegate {
+    constructor(callbackType, callbackId, callbackFunction) {
+        this.CallbackType = callbackType;
+        this.Callback = callbackFunction;
+        this.CallbackId = callbackId;
+    }
+}
 
 Delegate.prototype.Callback = function(callbackArgs) {
     let callbackFunction;

@@ -24,11 +24,6 @@ global['CreateBody'] = function (bodyparts) {
     }
 }
 
-// Objects
-global['RoomFunctions'] = require('Objects_RoomFunctions');
-global['Delegate'] = require('Objects_Delegate');
-global['TaskMaster'] = require('Tasks_TaskMaster');
-
 //Managers
 for (let ManagerNameId in Managers_Enum) {
     global[Managers_Enum[ManagerNameId]] = require('Managers_' + Managers_Enum[ManagerNameId]);

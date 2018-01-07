@@ -8,7 +8,7 @@ const MemoryManager = {
         Memory.DebugData = {};
         Memory.Bank = {};
         Memory.creeps = {};
-        for (let i = 0, length = Managers_Enum.length; i < length; i++) {
+        for (const ManagerNameId in Managers_Enum) {
             if (ResetResult == OK && ManagerNameId != Managers_Enum.MemoryManager) {
                 ResetResult = global[Managers_Enum[ManagerNameId]].InitManagerMemory();
             }
