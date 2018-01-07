@@ -30,24 +30,28 @@ const DefaultProfile = function (taskId) {
 }
 TaskProfiles[TaskProfile_Enum.Default] = DefaultProfile;//{ Profile: GeneralProfile, Args: [TaskArgs_Enum.TaskId, TaskArgs_Enum.SourceId, TaskArgs_Enum.ActionList] };
 
-const PrimeHarvesterProfile = function (taskId, sourceId, anchorPos) {
+const PrimeHarvesterProfile = function (sourceId, anchorPos) {
     const taskArgs = InitTaskProfile();
 
-    taskArgs[TaskArgs_Enum.TaskId] = taskId;
+    taskArgs[TaskArgs_Enum.TaskId] = 'PH_' + sourceId;
     taskArgs[TaskArgs_Enum.FixedTargets] = [sourceId,];
     taskArgs[TaskArgs_Enum.AnchorPos] = anchorPos;
 
-    taskArgs[TaskArgs_Enum.ActionList] = [{ Commands: [{ Action: CreepCommand_Enum.Harvest, FixedTarget: 0 }] }];
+    taskArgs[TaskArgs_Enum.ActionList] = [{
+        Commands: [{ Action: CreepCommand_Enum.WaitAt, Location: TaskArgs_Enum.AnchorPos }] // Include a callback somehow?  this.room.HarvesterArrived.
+    }, {
+        Commands: [{ Action: CreepCommand_Enum.Harvest, FixedTarget: 0 }]
+    }];
     taskArgs[TaskArgs_Enum.Body] = CreateBody([[5, WORK],]);
 
     return OK;
 }
 TaskProfiles[TaskProfile_Enum.PrimeHarvester] = PrimeHarvesterProfile;
 
-const TransporterProfile = function (taskId, size, resourceType) {
+const TransporterProfile = function (routeId, size, resourceType) {
     const taskArgs = InitTaskProfile();
 
-    taskArgs[TaskArgs_Enum.TaskId] = taskId;
+    taskArgs[TaskArgs_Enum.TaskId] = 'Transporter_' + routeId;
     taskArgs[TaskArgs_Enum.Size] = size;
     taskArgs[TaskArgs_Enum.Resource] = resourceType;
     taskArgs[TaskArgs_Enum.Body] = CreateBody([[size, MOVE], [size, CARRY]]);
@@ -61,6 +65,39 @@ const TransporterProfile = function (taskId, size, resourceType) {
     return OK;
 }
 TaskProfiles[TaskProfile_Enum.Transporter] = TransporterProfile;
+
+const UpgraderProfile = function () {
+    const taskArgs = InitTaskProfile();
+
+    taskArgs[TaskArgs_Enum.TaskId] = 'Upgrader';
+
+    taskArgs[TaskArgs_Enum.ActionList] = [{
+        Commands: [{ Action: CreepCommand_Enum.Withdraw },
+        { Action: CreepCommand_Enum.ReqTransfer },
+        { Action: CreepCommand_Enum.Harvest }]
+    }, {
+        Commands: [{ Action: CreepCommand_Enum.Upgrade }]
+    }];
+
+    return OK;
+}
+TaskProfiles[TaskProfile_Enum.Upgrader] = UpgraderProfile;
+
+const SweeperProfile = function (anchorPos) {
+    const taskArgs = InitTaskProfile();
+
+    taskArgs[TaskArgs_Enum.TaskId] = 'Sweeper';
+    taskArgs[TaskArgs_Enum.AnchorPos] = anchorPos;
+
+    taskArgs[TaskArgs_Enum.ActionList] = [{
+        Commands: [{ Action: CreepCommand_Enum.Pickup }],
+    }, {
+        Commands: [{ Action: CreepCommand_Enum.WaitAt, Location: TaskArgs_Enum.AnchorPos }]
+    }];
+
+    return OK;
+}
+TaskProfiles[TaskProfile_Enum.Sweeper] = SweeperProfile;
 
 const RequestTaskProfile = function (profile, args) {
     for (const profileType in TaskProfiles) {

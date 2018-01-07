@@ -1,32 +1,23 @@
 ﻿Room.prototype.InitMemory = function () {
-    StartFunction('Room.InitHiveMemory');
+    StartFunction('Room.InitMemory');
     this.Brain = {};
     this.TaskMaster = new TaskMaster(this.name, {});
 
     // Create contracts for each source.
     const sources = this.find(FIND_SOURCES);
 
-    for (let index in sources) {
-        let contractArgs = {
-            id: sources[index].id,
-            PreferredBodyType: CreepBodyType_Enum.Worker, // Change this to harvester eventually.
-            ToDoList: [
-                CreepManager.CreateNewCommand(CreepCommand_Enum.Harvest, sources[index].id, ['target']),
-                CreepManager.CreateNewCommand(CreepCommand_Enum.Transfer, null, ['target', 'energy']),
-                CreepManager.CreateNewCommand(CreepCommand_Enum.Upgrade, null, ['target']),
-            ],
-        };
-        this.CreateRoomContract(contractArgs);
+    for (let i = 0, length = sources.length; i < length; i++) {
+        // if i have enough energy and a storage/container to drop on to.
+        this.TaskMaster.PostNewTask(TaskMaster.CreateTaskFromProfile(TaskProfile_Enum.PrimeHarvester, [id, sources[i].pos]));
     }
 
-    const upgraderName = this.name + '_Upgrader';
-    this.CreateRoomContract({
-        id: upgraderName,
-        PreferredBodyType: CreepBodyType_Enum.Worker,
-        ToDoList: [
-            CreepManager.CreateNewCommand(CreepCommand_Enum.Upgrade, this.controller.id, ['target']),
-        ],
-    });
+    const upgraderTask = TaskMaster.CreateTaskFromProfile(TaskProfile_Enum.Upgrader);
+    // do things like make the body
+    this.TaskMaster.PostNewTask(upgraderTask);
+
+    const sweeperTask = TaskMaster.CreateTaskFromProfile(TaskProfile_Enum.Sweeper);
+    // do things like make the body
+    this.TaskMaster.PostNewTask(sweeperTask);
 
     EndFunction();
     return OK;

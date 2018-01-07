@@ -1,0 +1,1 @@
+StructureController.prototype.hive = StructureController.prototype.room;

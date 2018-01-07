@@ -27,6 +27,7 @@ const Enums = {
         // Advanced Commands
         ReqTransfer: 'reqTransfer',
         Deliver: 'deliver',
+        WaitAt: 'waitAt',
         /*FindWithdraw: 'findWithdraw',
         FindTransfer: 'findTransfer',*/
     },
@@ -72,6 +73,7 @@ const Enums = {
         MinDist: 'minDist',
         Size: 'size',
         Resource: 'resource',
+        TaskProfile: 'taskProfile',
     },
     TaskMemory_Enum: {
         ActionIndex: 'actionIndex',
@@ -81,6 +83,8 @@ const Enums = {
         Default: 'default',
         PrimeHarvester: 'primeHarvester',
         Transporter: 'transporter',
+        Upgrader: 'upgrader',
+        Sweeper: 'sweeper',
     },
 
     /*

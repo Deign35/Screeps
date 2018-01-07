@@ -1,17 +1,3 @@
-const InitTaskData = function (taskArgs) {
-    StartFunction('InitTaskData');
-    let taskData = {};
-
-    taskData['cache'] = {}; // For saving data for the current command
-    taskData['retryCount'] = 0;
-    taskData['taskId'] = taskArgs.id;
-    taskData['ToDoList'] = [...taskArgs.ToDoList];
-    taskData['CurrentCommand'] = taskData['ToDoList'].shift();
-
-    EndFunction();
-    return taskData;
-};
-
 const TaskMaster = function TaskMaster(roomName, taskManagerMemory) {
     StartFunction('TaskMaster.ctor(' + roomName + ')');
 
@@ -20,15 +6,16 @@ const TaskMaster = function TaskMaster(roomName, taskManagerMemory) {
     this.PendingTasks = [];
     this.PendingRequests = [];
 
-    this.PostNewTask = function (taskArgs) {
-        StartFunction(DebugId + '.PostNewTask: ' + taskArgs.id);
+    this.PostNewTask = function (taskData) {
+        const id = taskData[TaskArgs_Enum.TaskId];
+        StartFunction(this.DebugId + '.PostNewTask: ' + id);
 
-        if (this.TaskMemory[taskArgs.id]) {
+        if (this.TaskMemory[id]) {
             console.log('Task being reissued... Is this desired?');
-            Memory.DebugData[this.DebugId] = taskArgs;
+            Memory.DebugData[this.DebugId] = taskData;
         } else {
-            this.TaskMemory[taskArgs.id] = InitTaskData(taskArgs);
-            this.PendingTasks.push(taskArgs.id);
+            this.TaskMemory[id] = InitTaskData(taskData);
+            this.PendingTasks.push(taskData.id);
         }
 
         EndFunction();
@@ -79,6 +66,6 @@ const TaskMaster = function TaskMaster(roomName, taskManagerMemory) {
     EndFunction();
 };
 
-TaskMaster.prototype.CreateTask = require('Tasks_TaskProfiles');
+TaskMaster.CreateTaskFromProfile = require('Tasks_TaskProfiles');
 
 module.exports = TaskMaster;

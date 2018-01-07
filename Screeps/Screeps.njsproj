@@ -35,39 +35,43 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />
-    <Folder Include="src\Creeps\" />
-    <Folder Include="src\Hives\" />
+    <Folder Include="src\Prototypes\Creep\" />
+    <Folder Include="src\Prototypes\Hive\" />
     <Folder Include="src\Init\" />
+    <Folder Include="src\Managers\" />
+    <Folder Include="src\Prototypes\" />
     <Folder Include="src\Objects\" />
-    <Folder Include="src\Structures\" />
+    <Folder Include="src\Prototypes\Structure\" />
     <Folder Include="src\Tasks\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gruntfile.js" />
-    <Compile Include="src\Creeps\CreepManager.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.BasicCommands.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.CustomCommands.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.FindTarget.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.js" />
-    <Compile Include="src\Hives\HiveManager.js" />
-    <Compile Include="src\Hives\Prototype.Room.ActivateDefaults.js" />
-    <Compile Include="src\Hives\Prototype.Room.js" />
+    <Compile Include="src\Managers\CreepManager.js" />
+    <Compile Include="src\Prototypes\Creep.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Prototypes\Creep\BasicCommands.js" />
+    <Compile Include="src\Prototypes\Creep\CustomCommands.js" />
+    <Compile Include="src\Prototypes\Creep\FindTarget.js" />
+    <Compile Include="src\Managers\HiveManager.js" />
+    <Compile Include="src\Prototypes\Hive.js" />
+    <Compile Include="src\Prototypes\Hive\ActivateDefaults.js" />
     <Compile Include="src\Init\Debug.js" />
     <Compile Include="src\Init\Globals.js" />
     <Compile Include="src\main.js" />
-    <Compile Include="src\Init\MemoryManager.js" />
+    <Compile Include="src\Managers\MemoryManager.js" />
     <Compile Include="src\Init\Prototypes.js" />
     <Compile Include="src\Init\SwarmConsts.js" />
     <Compile Include="src\Init\SwarmEnums.js" />
     <Compile Include="src\Init\SwarmInitializer.js" />
     <Compile Include="src\Objects\Delegate.js" />
     <Compile Include="src\Objects\RoomFunctions.js" />
+    <Compile Include="src\Prototypes\Structure.js" />
     <Compile Include="src\ResourceManager.js" />
-    <Compile Include="src\Structures\Prototype.ConstructionSite.js" />
-    <Compile Include="src\Structures\Prototype.Structure.js" />
-    <Compile Include="src\Structures\Prototype.StructureController.js" />
-    <Compile Include="src\Structures\Prototype.StructureSpawn.js" />
-    <Compile Include="src\Structures\StructureManager.js" />
+    <Compile Include="src\Prototypes\Structure\ConstructionSite.js" />
+    <Compile Include="src\Prototypes\Structure\StructureController.js" />
+    <Compile Include="src\Prototypes\Structure\StructureSpawn.js" />
+    <Compile Include="src\Managers\StructureManager.js" />
     <Compile Include="src\Tasks\TaskMaster.js" />
     <Compile Include="src\Tasks\TaskProfiles.js">
       <SubType>Code</SubType>
