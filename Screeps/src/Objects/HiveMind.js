@@ -27,6 +27,22 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
     }
 
     UpdateTasks() {
+        /* Valid TaskResults:
+            Continue,
+            Retry,
+            Done,
+            Reassign,
+
+        for(task in tasks)
+            do{
+                result = task.Evalute()
+            } while(result == Retry);
+
+            if(result == Continue) { continue; }
+            if(result == Done) { delete this.TaskMemory[task.id] }
+            if(result == Reassign) { PendingTasks.push(task.id); }
+        */
+        /*
         StartFunction(this.name + '.UpdateTasks()');
         for (const id in this.TaskMemory) {
             let task = Task.FromData(this.TaskMemory[id]);
@@ -42,7 +58,7 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
                 this.PendingTasks.push(this.TaskMemory[id]);
             }
         }
-        EndFunction();
+        EndFunction();*/
     }
 
     EvaluateTask(task) {
