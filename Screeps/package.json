@@ -1,0 +1,22 @@
+{
+  "name": "screeps",
+  "version": "0.0.0",
+  "description": "Screeps",
+  "main": "main.js",
+  "author": {
+    "name": "Deign"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-file-append": "0.0.7",
+    "grunt-jsbeautifier": "^0.2.13"
+  },
+  "dependencies": {
+    "grunt-screeps": "^1.4.0"
+  }
+}
