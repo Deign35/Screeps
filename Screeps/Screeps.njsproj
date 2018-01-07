@@ -36,6 +36,7 @@
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="UnusedOrOldCode\" />
     <Folder Include="TypeScript\" />
     <Folder Include="src\" />
     <Folder Include="src\Prototypes\Creep\" />
@@ -49,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gruntfile.js" />
+    <Compile Include="src\Init\GlobalFunctions.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\Init\SwarmObjects.js">
       <SubType>Code</SubType>
     </Compile>
@@ -61,7 +65,7 @@
     <Compile Include="src\Prototypes\Creep\FindTarget.js" />
     <Compile Include="src\Managers\HiveManager.js" />
     <Compile Include="src\Prototypes\Hive.js" />
-    <Compile Include="src\Prototypes\Hive\ActivateDefaults.js" />
+    <Compile Include="UnusedOrOldCode\ActivateDefaults.js" />
     <Compile Include="src\Init\Debug.js" />
     <Compile Include="src\Init\Globals.js" />
     <Compile Include="src\main.js" />
@@ -72,11 +76,9 @@
     <Compile Include="src\Init\SwarmInitializer.js" />
     <Compile Include="src\Objects\Delegate.js" />
     <Compile Include="src\Prototypes\Structure.js" />
-    <Compile Include="src\ResourceManager.js" />
-    <Compile Include="src\Prototypes\Structure\ConstructionSite.js" />
-    <Compile Include="src\Prototypes\Structure\StructureController.js" />
-    <Compile Include="src\Prototypes\Structure\StructureSpawn.js" />
-    <Compile Include="src\Managers\StructureManager.js" />
+    <Compile Include="UnusedOrOldCode\ResourceManager.js" />
+    <Compile Include="UnusedOrOldCode\StructureSpawn.js" />
+    <Compile Include="UnusedOrOldCode\StructureManager.js" />
     <Compile Include="src\Objects\HiveMind.js" />
     <Compile Include="src\Tasks\Magistrate.js">
       <SubType>Code</SubType>
