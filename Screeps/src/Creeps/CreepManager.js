@@ -63,7 +63,6 @@ const CreepManager = {
         return OK;
     },
 
-
     ContractCallback: function (contract) {
         StartFunction('CreepManager.ContractCallback');
         //Here we assign a creep this contract.

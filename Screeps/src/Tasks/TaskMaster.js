@@ -12,25 +12,20 @@ const InitTaskData = function (taskArgs) {
     return taskData;
 };
 
-const MemoryId_Stub = 'TaskMaster_';
-const TaskMaster = function TaskMaster(room) {
-    StartFunction('TaskMaster.ctor(' + room.name + ')');
+const TaskMaster = function TaskMaster(roomName, taskManagerMemory) {
+    StartFunction('TaskMaster.ctor(' + roomName + ')');
 
-    this.RoomName = room.name
-    this.StartFunctionId = 'TaskMaster[' + this.TaskMasterId + ']';
-    this.TaskMasterId = MemoryId_Stub + RoomName;
-    this.TaskMemory = MemoryManager.LoadData(this.TaskMasterId);
+    this.TaskMemory = taskManagerMemory;
+    this.DebugId = 'TaskMaster[' + roomName + ']';
     this.PendingTasks = [];
     this.PendingRequests = [];
 
-    this.Save = () => { MemoryManager.SaveData(this.TaskMasterId, this.TaskMemory); };
-
     this.PostNewTask = function (taskArgs) {
-        StartFunction(StartFunctionId + '.PostNewTask: ' + taskArgs.id);
+        StartFunction(DebugId + '.PostNewTask: ' + taskArgs.id);
 
         if (this.TaskMemory[taskArgs.id]) {
             console.log('Task being reissued... Is this desired?');
-            Memory.DebugData[this.TaskMasterId] = taskArgs;
+            Memory.DebugData[this.DebugId] = taskArgs;
         } else {
             this.TaskMemory[taskArgs.id] = InitTaskData(taskArgs);
             this.PendingTasks.push(taskArgs.id);
@@ -45,7 +40,7 @@ const TaskMaster = function TaskMaster(room) {
     }
 
     this.UpdateTasks = function () {
-        StartFunction(StartFunctionId + '.UpdateTasks()');
+        StartFunction(DebugId + '.UpdateTasks()');
         for (const id in this.TaskMemory) {
             let result = EvaluteTask(this.TaskMemory[id]); // Contract.Evaluate();
 
@@ -68,7 +63,7 @@ const TaskMaster = function TaskMaster(room) {
     }
 
     this.ResolvePendingTasks = function () {
-        StartFunction(StartFunctionId + '.ResolvePendingTasks()');
+        StartFunction(DebugId + '.ResolvePendingTasks()');
 
         while (this.PendingTasks.length > 0 && this.PendingRequests.length > 0) {
             const task = this.PendingTasks.shift();
@@ -84,46 +79,6 @@ const TaskMaster = function TaskMaster(room) {
     EndFunction();
 };
 
-TaskMaster.prototype.NewTasks = {};
-TaskMaster.prototype.NewTasks[TaskType_Enum.General] = function (taskId, sourceId) {
-    StartFunction(StartFunctionId + '.NewTasks[MakeSourceHarvesterTask]');
-    const taskArgs = {};
-    taskArgs.Memory[TaskMemory_Enum.ActionIndex] = 0;
-    taskArgs.Memory[TaskMemory_Enum.RetryCount] = 0;
-
-    taskArgs[TaskArgs_Enum.TaskId] = taskId;
-    taskArgs[TaskArgs_Enum.SourceId] = sourceId;
-    taskArgs[TaskArgs_Enum.ActionIndex] = 0;
-
-    taskArgs[TaskArgs_Enum.ActionList] = [{
-        Commands: [{ Action: CreepCommand_Enum.Withdraw}, {
-            Action: CreepCommand_Enum.ReqTransfer}] }, {
-            Commands: [{ Action: CreepCommand_Enum.Transfer},
-            { Action: CreepCommand_Enum.Build},
-            { Action: CreepCommand_Enum.Upgrade, Target = Game.rooms[this.roomName].controller.id }]}];
-
-    EndFunction();
-    return OK;
-}
-
-// Must have a container to drop on to.
-TaskMaster.NewTasks[TaskType_Enum.PrimeHarvester] = function (taskId, sourceId, targetPos) {
-    StartFunction(StartFunctionId + '.NewTasks[PrimeHarvester]');
-    const taskArgs = {};
-
-    taskArgs[TaskArgs_Enum.Memory] = {};
-    taskArgs.Memory[TaskMemory_Enum.ActionIndex] = 0;
-    taskArgs.Memory[TaskMemory_Enum.RetryCount] = 0;
-
-    taskArgs[TaskArgs_Enum.TaskId] = taskId;
-    taskArgs[TaskArgs_Enum.SourceId] = sourceId;
-    taskArgs[TaskArgs_Enum.AnchorPos] = targetPos;
-    taskArgs[TaskArgs_Enum.ActionIndex] = 0;
-
-    taskArgs[TaskArgs_Enum.ActionList] = [{ Commands: [{ Action: CreepCommand_Enum.Harvest, Target = 'sourceId' }] }];
-
-    EndFunction();
-    return OK;
-};
+TaskMaster.prototype.CreateTask = require('TaskProfiles');
 
 module.exports = TaskMaster;

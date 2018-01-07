@@ -26,6 +26,8 @@ const Enums = {
         Withdraw: 'withdraw',
 
         // Advanced Commands
+        ReqTransfer: 'reqTransfer',
+        Deliver: 'deliver',
         /*FindWithdraw: 'findWithdraw',
         FindTransfer: 'findTransfer',*/
     },
@@ -64,17 +66,24 @@ const Enums = {
         ActionList: 'actionList',
         AnchorPos: 'anchorPos',
         Memory: 'memory',
-        SourceId: 'sourceId',
+        FixedTargets: 'fixedTargets',
         TaskId: 'taskId',
+        Body: 'body',
+        MaxDist: 'maxDist',
+        MinDist: 'minDist',
+        Size: 'size',
+        Resource: 'resource',
     },
     TaskMemory_Enum: {
         ActionIndex: 'actionIndex',
         RetryCount: 'retryCount',
     },
-    TaskType_Enum: {
-        General: 'general',
+    TaskProfile_Enum: {
+        Default: 'default',
         PrimeHarvester: 'primeHarvester',
+        Transporter: 'transporter',
     },
+
     /*
     CreepJob_Enum: {
         Worker: 'worker',

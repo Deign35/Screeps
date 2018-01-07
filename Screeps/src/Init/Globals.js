@@ -13,6 +13,17 @@ global['EndFunction'] = Debug['CallStack']['Pop'];
 global['Reset'] = function () { Memory.RESET = true; return OK; };
 global['reset'] = Reset;
 
+// Functions
+global['CreateBody'] = function (bodyparts) {
+    let bodyList = [];
+    for (let i = 0, length = bodyParts.length; i < length; i++) {
+        const part = bodyParts[i];
+        for (let j = 0; j < part[0]; j++) {
+            bodyList.push(part[1]);
+        }
+    }
+}
+
 // Objects
 global['RoomFunctions'] = require('RoomFunctions');
 global['Delegate'] = require('Delegate');

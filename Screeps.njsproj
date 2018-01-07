@@ -16,7 +16,7 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
-    <Compile Include="Gruntfile.js" />
+    <Compile Include="Screeps\Gruntfile.js" />
     <Compile Include="src\Creeps\CreepManager.js" />
     <Compile Include="Current Known Errors.js" />
     <Compile Include="src\Init\Debug.js" />
