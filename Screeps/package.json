@@ -14,9 +14,12 @@
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-file-append": "0.0.7",
-    "grunt-jsbeautifier": "^0.2.13"
+    "grunt-jsbeautifier": "^0.2.13",
+    "screeps-profiler": "^2.0.1"
   },
   "dependencies": {
-    "grunt-screeps": "^1.4.0"
+    "grunt-screeps": "^1.4.0",
+    "screepsplus-agent": "^1.2.2",
+    "typed-screeps": "^2.1.0"
   }
 }
