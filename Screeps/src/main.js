@@ -17,13 +17,13 @@ const MainLoop = function () {
 
 const EntryPoint = function () {
     try {
-        if (Initializer.Init() == OK) {
+        if (Initializer.InitSwarmData() == OK) {
             MainLoop();
         } else {
             console.log("UNABLE TO RUN LOOP DUE TO INIT TAKING TOO LONG!!!!");
             Memory.InitOverRun += 1;
         }
-        Initializer.Complete();
+        Initializer.SaveSwarmData();
     } catch(error) {
         console.log('Error: ' + error);
         Debug.CallStack.OutputStackTrace();

@@ -44,19 +44,5 @@ CreepCommandResponseDefaults[ERR_RCL_NOT_ENOUGH] = CreepCommandResponse_Enum.Can
 CreepCommandResponseDefaults[ERR_GCL_NOT_ENOUGH] = CreepCommandResponse_Enum.CancelCommands; // -15
 
 Consts['CreepCommandResponseDefaults'] = CreepCommandResponseDefaults;
-/*
-const CreepCommandResponse_DoOne = {};
-CreepCommandResponse_DoOne[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.RequireResources; // -6
-CreepCommandResponse_DoOne[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.RequireTarget; // -7
-CreepCommandResponse_DoOne[ERR_FULL] = CreepCommandResponse_Enum.Next; // -8
-CreepCommandResponse_DoOne[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move; // -9
-CreepCommandResponse_DoOne[ERR_INVALID_ARGS] = CreepCommandResponse_Enum.Next; // -10
-CreepCommandResponse_DoOne[ERR_TIRED] = CreepCommandResponse_Enum.Continue; // -11
-CreepCommandResponse_DoOne[ERR_NO_BODYPART] = CreepCommandResponse_Enum.Next; // -12
-// no -13
-CreepCommandResponse_DoOne[ERR_RCL_NOT_ENOUGH] = CreepCommandResponse_Enum.CancelCommands; // -14
-CreepCommandResponse_DoOne[ERR_GCL_NOT_ENOUGH] = CreepCommandResponse_Enum.CancelCommands; // -15
 
-Consts['CreepCommandResponse_DoOne'] = CreepCommandResponse_DoOne;
-*/
 global['Consts'] = Consts;

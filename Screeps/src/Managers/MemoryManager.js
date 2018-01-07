@@ -2,19 +2,17 @@ const MemoryManager = {
     InitManagerMemory: function () {
         StartFunction('InitManagerMemory');
         console.log('BEGIN: Reset Brain Memory');
-        let ResetResult = OK;
+        let initResult = OK;
 
-        //Temp fix for now:
-        Memory.DebugData = {};
         Memory.Bank = {};
         Memory.creeps = {};
         for (const ManagerNameId in Managers_Enum) {
-            if (ResetResult == OK && ManagerNameId != Managers_Enum.MemoryManager) {
-                ResetResult = global[Managers_Enum[ManagerNameId]].InitManagerMemory();
+            if (initResult == OK && ManagerNameId != Managers_Enum.MemoryManager) {
+                initResult = global[Managers_Enum[ManagerNameId]].InitManagerMemory();
             }
         }
 
-        if (ResetResult == OK) {
+        if (initResult == OK) {
             Memory.INIT = true;
             if (Memory.RESET) {
                 delete Memory.RESET;
@@ -22,12 +20,12 @@ const MemoryManager = {
             Memory.InitOverRun = 0;
         }
 
-        console.log('END: Reset Brain Memory[' + ResetResult + ']');
+        console.log('END: Reset Brain Memory[' + initResult + ']');
         EndFunction();
         return ResetResult;
     },
 
-    Init: function () {
+    LoadOverlord: function () {
         StartFunction('MemoryManager.Init()');
         let initResult = OK;
         if (!Memory.INIT || Memory.RESET) {
@@ -41,7 +39,7 @@ const MemoryManager = {
         EndFunction();
         return initResult;
     },
-    Complete: function () {
+    SaveOverlord: function () {
         StartFunction('MemoryManager.Complete()');
 
         EndFunction();

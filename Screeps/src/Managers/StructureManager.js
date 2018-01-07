@@ -17,7 +17,7 @@ const StructureManager = {
         EndFunction();
         return OK;
     },
-    Init: function () {
+    Load: function () {
         StartFunction('StructureManager.Init');
         this.ManagerData = MemoryManager.LoadData(MemoryId);
 
@@ -35,7 +35,7 @@ const StructureManager = {
         EndFunction();
         return OK;
     },
-    Complete: function () {
+    Save: function () {
         StartFunction('StructureManager.Complete');
 
         MemoryManager.SaveData(MemoryId, this.ManagerData);

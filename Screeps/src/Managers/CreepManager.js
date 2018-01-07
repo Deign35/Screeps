@@ -16,7 +16,7 @@ const CreepManager = {
         return OK;
     },
 
-    Init: function () {
+    Load: function () {
         StartFunction('CreepManager.Init');
         this.ManagerData = MemoryManager.LoadData(MemoryId);
         this.creepsToRetry = {};
@@ -36,7 +36,7 @@ const CreepManager = {
         EndFunction();
         return OK;
     },
-    Complete: function () {
+    Save: function () {
         StartFunction('CreepManager.Complete');
         MemoryManager.SaveData(MemoryId, this.ManagerData);
         EndFunction();

@@ -19,7 +19,7 @@ const HiveManager = {
         EndFunction();
         return result;
     },
-    Init: function () {
+    Load: function () {
         StartFunction('HiveManager.Init');
         this.ManagerData = MemoryManager.LoadData(MemoryId);
 
@@ -33,7 +33,7 @@ const HiveManager = {
         EndFunction();
         return OK;
     },
-    Complete: function () {
+    Save: function () {
         StartFunction('HiveManager.Complete');
 
         for (let name in this.ManagerData['Hives']) {

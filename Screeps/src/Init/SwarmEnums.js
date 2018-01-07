@@ -1,7 +1,6 @@
 const Enums = {
     Managers_Enum: {
-        MemoryManager: 'MemoryManager', // Must be first
-        HiveManager: 'HiveManager', // Must be before CreepManager (let's replace this) //Unconfirmed, but should be ok to move around now.
+        HiveManager: 'HiveManager',
         StructureManager: 'StructureManager',
         CreepManager: 'CreepManager',
     },
@@ -28,8 +27,6 @@ const Enums = {
         ReqTransfer: 'reqTransfer',
         Deliver: 'deliver',
         WaitAt: 'waitAt',
-        /*FindWithdraw: 'findWithdraw',
-        FindTransfer: 'findTransfer',*/
     },
 
     CreepCommandResponse_Enum: {
@@ -53,27 +50,27 @@ const Enums = {
     },
 
     CallbackType_Enum: {
-        Id: 'ID',
         GameObject: 'GAMEOBJECT',
+        Id: 'ID',
         Room: 'ROOM',
     },
 
     CreepBodyType_Enum: {
-        Worker: 'WORKER',
         AllPurpose: 'ALLPURPOSE',
+        Worker: 'WORKER',
     },
 
     TaskArgs_Enum: {
         ActionList: 'actionList',
         AnchorPos: 'anchorPos',
-        Memory: 'memory',
-        FixedTargets: 'fixedTargets',
-        TaskId: 'taskId',
         Body: 'body',
+        FixedTargets: 'fixedTargets',
         MaxDist: 'maxDist',
+        Memory: 'memory',
         MinDist: 'minDist',
-        Size: 'size',
         Resource: 'resource',
+        Size: 'size',
+        TaskId: 'taskId',
         TaskProfile: 'taskProfile',
     },
     TaskMemory_Enum: {
@@ -83,9 +80,9 @@ const Enums = {
     TaskProfile_Enum: {
         Default: 'default',
         PrimeHarvester: 'primeHarvester',
+        Sweeper: 'sweeper',
         Transporter: 'transporter',
         Upgrader: 'upgrader',
-        Sweeper: 'sweeper',
     },
 };
 

@@ -4,19 +4,21 @@ require('Init_SwarmObjects');
 require('Init_Globals');
 require('Init_Prototypes');
 
-let SwarmInit = function () {
+let InitializeTick = function () {
+    MemoryManager.LoadOverlord();
     for (let ManagerNameId in Managers_Enum) {
-        global[Managers_Enum[ManagerNameId]].Init();
+        global[Managers_Enum[ManagerNameId]].Load();
     }
 
     return OK;
 };
 
-let SwarmComplete = function () {
+let CompleteTick = function () {
     for (let ManagerNameId in Managers_Enum) {
-        global[Managers_Enum[ManagerNameId]].Complete();
+        global[Managers_Enum[ManagerNameId]].Save();
     }
+    MemoryManager.SaveOverlord();
 }
 
-module.exports.Init = SwarmInit;
-module.exports.Complete = SwarmComplete;
+module.exports.InitSwarmData = InitializeTick;
+module.exports.SaveSwarmData = CompleteTick;
