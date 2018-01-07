@@ -6,9 +6,7 @@ const MainLoop = function () {
     // Tell all creeps to do their current job or request a new one.
     CreepManager.ActivateCreeps();
     // Structures check on their status and request a job.
-    StructureManager.ActivateStructures();
-    // Rerun any creeps that have new jobs.
-    CreepManager.ActivateReruns();
+    //StructureManager.ActivateStructures();
     // Spawning creeps for new jobs that are still unfilled.
     HiveManager.ActivateHives();
 

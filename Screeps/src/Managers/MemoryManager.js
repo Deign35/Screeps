@@ -4,6 +4,7 @@ const MemoryManager = {
         console.log('BEGIN: Reset Brain Memory');
         let initResult = OK;
 
+        Memory.DataDump = [];
         Memory.Bank = {};
         Memory.creeps = {};
         for (const ManagerNameId in Managers_Enum) {
@@ -22,7 +23,7 @@ const MemoryManager = {
 
         console.log('END: Reset Brain Memory[' + initResult + ']');
         EndFunction();
-        return ResetResult;
+        return initResult;
     },
 
     LoadOverlord: function () {

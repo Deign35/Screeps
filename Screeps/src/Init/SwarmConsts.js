@@ -1,6 +1,7 @@
 const Consts = {};
 Consts.DEBUG_MODE = true;
 
+/*
 const HCC = function HiveControllerConsts(rampHitMax, extensionCapacity, experienceToUpgrade, allowedStructures, controllerDowngradeValue) {
     this.RampartHitMax = rampHitMax;
     this.ExtensionCapacity = extensionCapacity;
@@ -23,7 +24,7 @@ for (let i = 0; i < 9; i++) {
     );
 
     Consts.HiveDefaults.push(Object.freeze(newHiveDefault));
-}
+}*/
 
 const CreepCommandResponseDefaults = {};
 CreepCommandResponseDefaults[OK] = CreepCommandResponse_Enum.Continue; // 0

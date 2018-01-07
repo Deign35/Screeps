@@ -1,13 +1,20 @@
 const MemoryId = 'CreepManagerMemory';
-const ContractDelegate = new Delegate(CallbackType_Enum.Manager, 'CreepManager', 'ContractCallback');
 
-const CreepManager = {
+// Managers -> Lords
+// CreepLord
+// HiveLord
+// StructureLord
+// Structure -> ?? 
+// Creeps -> ??
+const CreepManager = { // Is this class redundant with the HiveMind?
     InitManagerMemory: function () {
         StartFunction('CreepManager.InitManagerMemory');
         this.ManagerData = {};
 
         this.ManagerData['Creeps'] = {};
-        for (let name in Game.creeps) {
+        console.log('CreepManager.Init[Creeps]: ' + Game.creeps.length || 0);
+        for (const name in Game.creeps) {
+            console.log('CreepManager.InitCreep[' + name + ']');
             this.ManagerData['Creeps'][name] = {};
         }
 
@@ -17,10 +24,8 @@ const CreepManager = {
     },
 
     Load: function () {
-        StartFunction('CreepManager.Init');
+        StartFunction('CreepManager.Load');
         this.ManagerData = MemoryManager.LoadData(MemoryId);
-        this.creepsToRetry = {};
-        this.creeps = {}
 
         for (const name in this.ManagerData['Creeps']) {
             if (!Game.creeps[name]) {
@@ -29,8 +34,8 @@ const CreepManager = {
                 continue;
             }
 
-            this.creeps[name] = Game.creeps[name];
-            this.creeps[name].Brain = this.ManagerData['Creeps'][name];
+            let creep = Game.creeps[name];
+            creep.Brain = this.ManagerData['Creeps'][name];
         }
 
         EndFunction();
@@ -38,6 +43,12 @@ const CreepManager = {
     },
     Save: function () {
         StartFunction('CreepManager.Complete');
+
+        for (const name in this.ManagerData['Creeps']) {
+            let creep = Game.creeps[name];
+            this.ManagerData['Creeps'][name] = creep.Brain;
+        }
+
         MemoryManager.SaveData(MemoryId, this.ManagerData);
         EndFunction();
         return OK;
@@ -45,27 +56,9 @@ const CreepManager = {
 
     ActivateCreeps: function () {
         StartFunction('CreepManager.ActivateCreeps');
-        for (let name in Game.creeps) {
+        for (const name in this.ManagerData['Creeps']) {
             Game.creeps[name].Activate();
         }
-        EndFunction();
-        return OK;
-    },
-
-    ActivateReruns: function () {
-        StartFunction('CreepManager.ActivateReruns');
-        for (let id in this.creepsToRetry) {
-            if (this.creepsToRetry[id]) {
-                this.creepsToRetry[id].Activate();
-            }
-        }
-        EndFunction();
-        return OK;
-    },
-
-    ContractCallback: function (contract) {
-        StartFunction('CreepManager.ContractCallback');
-        //Here we assign a creep this contract.
         EndFunction();
         return OK;
     },

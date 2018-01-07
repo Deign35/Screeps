@@ -21,6 +21,8 @@ const StructureManager = {
         StartFunction('StructureManager.Init');
         this.ManagerData = MemoryManager.LoadData(MemoryId);
 
+        // Structures should just be able to be moved from construction site to structures.
+        // Also, this shouldn't be a manager.  Let's make this a 'Cerebrate' for the hive.
         this.structures = {};
         for (const id in this.ManagerData['Structures']) {
             if (!Game.structures[id]) {

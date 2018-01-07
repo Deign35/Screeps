@@ -26,6 +26,6 @@ Task.FromData = function (taskData) {
     return newTask;
 }
 
-Task.prototype.Evaluate = function () { console.log('Im evaluating'); return TaskResults_Enum.Incomplete; };
+Task.prototype.Evaluate = function () { return TaskResults_Enum.Incomplete; };
 
 module.exports = Task;

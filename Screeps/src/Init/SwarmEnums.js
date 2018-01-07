@@ -1,7 +1,7 @@
 const Enums = {
     Managers_Enum: {
         HiveManager: 'HiveManager',
-        StructureManager: 'StructureManager',
+        //StructureManager: 'StructureManager',
         CreepManager: 'CreepManager',
     },
 
