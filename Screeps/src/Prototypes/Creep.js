@@ -1,4 +1,4 @@
-Creep.prototype.ExecuteCommand = function (command) {
+﻿Creep.prototype.ExecuteCommand = function (command) {
     StartFunction('Creep[' + this.id + '].ExecuteCommand(' + command.Command + ')');
     let actionResult = OK;
 
@@ -71,7 +71,7 @@ Creep.prototype.DefaultCreepCommandResponse = function (command, commandResult) 
     }
 
     if (response == CreepCommandResponse_Enum.RequireResources) {
-        if(!this.Brain.CommandData['HasObtainedResources']) {
+        if (!this.Brain.CommandData['HasObtainedResources']) {
             runAgain = true;
             response = CreepCommandResponse_Enum.Retry;
             //this.Brain.CommandData['RequiresResources'] = true;
@@ -87,7 +87,7 @@ Creep.prototype.DefaultCreepCommandResponse = function (command, commandResult) 
         if (this.Brain['retryCount'] < 5) {
             this.Brain['retryCount'] += 1;
         } else {
-            this.Brain.CommandData = { };
+            this.Brain.CommandData = {};
             response = CreepCommandResponse_Enum.Next;
             console.log(this.name + ' retry max.(' + command.id + ')');
             this.Brain['retryCount'] = 0;
@@ -151,7 +151,7 @@ Creep.prototype.Activate = function () {
     EndFunction();
     return OK;
 };
-
-require('Prototype.Creep.CustomCommands');
-require('Prototype.Creep.BasicCommands');
-require('Prototype.Creep.FindTarget');
+const prototypeFolderName = 'Prototypes_Creep_';
+require(prototypeFolderName + 'CustomCommands');
+require(prototypeFolderName + 'BasicCommands');
+require(prototypeFolderName + 'FindTarget');

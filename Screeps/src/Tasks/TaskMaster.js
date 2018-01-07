@@ -79,6 +79,6 @@ const TaskMaster = function TaskMaster(roomName, taskManagerMemory) {
     EndFunction();
 };
 
-TaskMaster.prototype.CreateTask = require('TaskProfiles');
+TaskMaster.prototype.CreateTask = require('Tasks_TaskProfiles');
 
 module.exports = TaskMaster;

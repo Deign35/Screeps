@@ -1,5 +1,5 @@
 if (Consts.DEBUG_MODE) {
-    global['Debug'] = require('Debug');
+    global['Debug'] = require('Init_Debug');
 } else {
     global['Debug'] = {
         CallStack: {
@@ -25,11 +25,11 @@ global['CreateBody'] = function (bodyparts) {
 }
 
 // Objects
-global['RoomFunctions'] = require('RoomFunctions');
-global['Delegate'] = require('Delegate');
-global['ContractAgency'] = require('ContractAgency');
+global['RoomFunctions'] = require('Objects_RoomFunctions');
+global['Delegate'] = require('Objects_Delegate');
+global['TaskMaster'] = require('Tasks_TaskMaster');
 
 //Managers
 for (let ManagerNameId in Managers_Enum) {
-    global[Managers_Enum[ManagerNameId]] = require(Managers_Enum[ManagerNameId]);
+    global[Managers_Enum[ManagerNameId]] = require('Managers_' + Managers_Enum[ManagerNameId]);
 }

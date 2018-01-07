@@ -1,4 +1,4 @@
-const Initializer = require('SwarmInitializer');
+const Initializer = require('Init_SwarmInitializer');
 
 const MainLoop = function () {
     StartFunction('MainLoop');
@@ -11,8 +11,6 @@ const MainLoop = function () {
     CreepManager.ActivateReruns();
     // Spawning creeps for new jobs that are still unfilled.
     HiveManager.ActivateHives();
-    // shrug
-    SwarmManager.ActivateSwarm();
 
     EndFunction();
 };

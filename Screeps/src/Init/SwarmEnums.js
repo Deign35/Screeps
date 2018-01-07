@@ -1,7 +1,6 @@
 const Enums = {
     Managers_Enum: {
         MemoryManager: 'MemoryManager', // Must be first
-        SwarmManager: 'SwarmManager',
         HiveManager: 'HiveManager', // Must be before CreepManager (let's replace this) //Unconfirmed, but should be ok to move around now.
         StructureManager: 'StructureManager',
         CreepManager: 'CreepManager',

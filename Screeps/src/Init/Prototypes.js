@@ -1,4 +1,3 @@
-require('Prototype.Creep');
-require('Prototype.Room');
-require('Prototype.Structure');
-require('Prototype.ConstructionSite');
+require('Prototypes_Creep');
+require('Prototypes_Hive');
+require('Prototypes_Structure');

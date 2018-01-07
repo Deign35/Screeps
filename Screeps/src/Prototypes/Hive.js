@@ -1,4 +1,4 @@
-Room.prototype.InitMemory = function () {
+﻿Room.prototype.InitMemory = function () {
     StartFunction('Room.InitHiveMemory');
     this.Brain = {};
     this.TaskMaster = new TaskMaster(this.name, {});

@@ -1,7 +1,7 @@
-require('SwarmEnums');
-require('SwarmConsts');
-require('Globals');
-require('Prototypes');
+require('Init_SwarmEnums');
+require('Init_SwarmConsts');
+require('Init_Globals');
+require('Init_Prototypes');
 
 let SwarmInit = function () {
     for (let ManagerNameId in Managers_Enum) {
