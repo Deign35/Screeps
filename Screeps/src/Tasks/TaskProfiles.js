@@ -25,6 +25,7 @@ const DefaultProfile = function (taskId) {
 }
 TaskProfiles[TaskProfile_Enum.Default] = DefaultProfile;
 
+// Idea for harvester/Source, Detect the position around the source with the most moveable space.  Put the container there.
 const PrimeHarvesterProfile = function (sourceId, anchorPos) {
     const newTask = new Task();
     newTask.SetArgument(TaskArgs_Enum.TaskId, 'PH_' + sourceId);

@@ -12,20 +12,20 @@ const CreepManager = { // Is this class redundant with the HiveMind?
         this.ManagerData = {};
 
         this.ManagerData['Creeps'] = {};
-        console.log('CreepManager.Init[Creeps]: ' + Game.creeps.length || 0);
+        console.log('CreepManager.Init[Creeps]: ' + (Game.creeps.length || 0));
         for (const name in Game.creeps) {
             console.log('CreepManager.InitCreep[' + name + ']');
             this.ManagerData['Creeps'][name] = {};
         }
 
-        MemoryManager.SaveData(MemoryId, this.ManagerData);
+        Overmind.SaveData(MemoryId, this.ManagerData);
         EndFunction();
         return OK;
     },
 
     Load: function () {
         StartFunction('CreepManager.Load');
-        this.ManagerData = MemoryManager.LoadData(MemoryId);
+        this.ManagerData = Overmind.LoadData(MemoryId);
 
         for (const name in this.ManagerData['Creeps']) {
             if (!Game.creeps[name]) {
@@ -49,7 +49,7 @@ const CreepManager = { // Is this class redundant with the HiveMind?
             this.ManagerData['Creeps'][name] = creep.Brain;
         }
 
-        MemoryManager.SaveData(MemoryId, this.ManagerData);
+        Overmind.SaveData(MemoryId, this.ManagerData);
         EndFunction();
         return OK;
     },

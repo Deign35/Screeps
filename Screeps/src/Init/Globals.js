@@ -9,7 +9,7 @@ if (Consts.DEBUG_MODE) {
 }// Debug must be set first.
 
 require('Init_GlobalFunctions');
-global['MemoryManager'] = require('Managers_MemoryManager');
+global['Overmind'] = require('Init_Overmind');
 
 for (let ManagerNameId in Managers_Enum) {
     global[Managers_Enum[ManagerNameId]] = require('Managers_' + Managers_Enum[ManagerNameId]);

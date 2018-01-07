@@ -1,7 +1,6 @@
 const Enums = {
     Managers_Enum: {
         HiveManager: 'HiveManager',
-        //StructureManager: 'StructureManager',
         CreepManager: 'CreepManager',
     },
 
@@ -84,6 +83,8 @@ const Enums = {
         Transporter: 'transporter',
         Upgrader: 'upgrader',
     },
+
+    // Offensive Unit names: Stinger, Roach, Wasp, Devourer, 
 };
 
 for (let enumType in Enums) {

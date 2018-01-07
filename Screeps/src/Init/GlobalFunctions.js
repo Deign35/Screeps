@@ -3,7 +3,6 @@ global['StartFunction'] = Debug['CallStack']['Push'];
 global['EndFunction'] = Debug['CallStack']['Pop'];
 global['Reset'] = function () { Memory.RESET = true; return OK; };
 
-// Functions
 global['CreateBody'] = function (bodyparts) {
     let bodyList = [];
     for (let i = 0, length = bodyParts.length; i < length; i++) {
@@ -12,4 +11,8 @@ global['CreateBody'] = function (bodyparts) {
             bodyList.push(part[1]);
         }
     }
+}
+
+global['CanSpawnBody'] = function (spawner, body) {
+    return spawner.spawnCreep(body, 'TestSpawnCreepBody', { dryRun: true }) == OK;
 }

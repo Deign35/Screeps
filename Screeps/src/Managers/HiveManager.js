@@ -6,18 +6,18 @@ const HiveManager = {
         this.ManagerData = {};
 
         this.ManagerData['Hives'] = {};
-        console.log('HiveManager.Init[Hives]: ' + Game.rooms.length || 0); // TEST_OnServer
+        console.log('HiveManager.Init[Hives]: ' + (Game.rooms.length || 0));
         for (let roomId in Game.rooms) {
             result = this.AddNewHive(Game.rooms[roomId]);
         }
 
-        MemoryManager.SaveData(MemoryId, this.ManagerData);
+        Overmind.SaveData(MemoryId, this.ManagerData);
         EndFunction();
         return result;
     },
     Load: function () {
         StartFunction('HiveManager.Load');
-        this.ManagerData = MemoryManager.LoadData(MemoryId);
+        this.ManagerData = Overmind.LoadData(MemoryId);
 
         for (let name in this.ManagerData['Hives']) {
             let room = Game.rooms[name];
@@ -37,7 +37,7 @@ const HiveManager = {
             this.ManagerData['Hives'][name] = room.Brain;
         }
 
-        MemoryManager.SaveData(MemoryId, this.ManagerData);
+        Overmind.SaveData(MemoryId, this.ManagerData);
         EndFunction();
         return OK;
     },

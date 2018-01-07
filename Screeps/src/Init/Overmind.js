@@ -1,58 +1,54 @@
-const MemoryManager = {
-    InitManagerMemory: function () {
-        StartFunction('InitManagerMemory');
-        console.log('BEGIN: Reset Brain Memory');
+const Overmind = {
+    InitOvermind: function () {
+        StartFunction('InitOvermind');
+        const startInit = Game.cpu.getUsed();
+        console.log('Reset Overmind Begin');
         let initResult = OK;
 
         Memory.DataDump = [];
-        Memory.Bank = {};
-        Memory.creeps = {};
+        Memory.Overmind = {};
+        //Memory.creeps = {};
         for (const ManagerNameId in Managers_Enum) {
-            if (initResult == OK && ManagerNameId != Managers_Enum.MemoryManager) {
+            if (initResult == OK) {
                 initResult = global[Managers_Enum[ManagerNameId]].InitManagerMemory();
             }
         }
 
         if (initResult == OK) {
-            Memory.INIT = true;
             if (Memory.RESET) {
                 delete Memory.RESET;
             }
             Memory.InitOverRun = 0;
         }
 
-        console.log('END: Reset Brain Memory[' + initResult + ']');
+        console.log('Reset Overmind Completed[' + initResult + '] in ' + (Game.cpu.getUsed() - startInit) + ' ticks.');
         EndFunction();
         return initResult;
     },
 
-    LoadOverlord: function () {
-        StartFunction('MemoryManager.Init()');
+    EnsureInit: function () {
+        StartFunction('Overmind.EnsureInit()');
         let initResult = OK;
-        if (!Memory.INIT || Memory.RESET) {
-            Memory.INIT = false;
-            initResult = this.InitManagerMemory();
-            if (!Memory.INIT) {
-                console.log('Unable to initialize memory[' + initResult.toString() + ']');
-            }
+        if (!Memory.Overmind || Memory.RESET) {
+            initResult = this.InitOvermind();
         }
 
         EndFunction();
         return initResult;
     },
-    SaveOverlord: function () {
-        StartFunction('MemoryManager.Complete()');
+    Complete: function () {
+        StartFunction('Overmind.Complete()');
 
         EndFunction();
         return OK;
     },
 
     SaveData: function (requesterId, saveData) {
-        Memory.Bank[requesterId] = saveData;
+        Memory.Overmind[requesterId] = saveData;
         return OK;
     },
     LoadData: function (requesterId) {
-        return Memory.Bank[requesterId] || { };
+        return Memory.Overmind[requesterId] || { };
     },/*
     DeleteData: function(requesterId) {
         delete Memory.Bank[requesterId];
@@ -66,4 +62,4 @@ const MemoryManager = {
     }*/
 };
 
-module.exports = MemoryManager;
+module.exports = Overmind;

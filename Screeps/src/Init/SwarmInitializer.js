@@ -5,7 +5,7 @@ require('Init_Globals');
 require('Init_Prototypes');
 
 let InitializeTick = function () {
-    MemoryManager.LoadOverlord();
+    Overmind.EnsureInit();
     for (let ManagerNameId in Managers_Enum) {
         global[Managers_Enum[ManagerNameId]].Load();
     }
@@ -17,7 +17,7 @@ let CompleteTick = function () {
     for (let ManagerNameId in Managers_Enum) {
         global[Managers_Enum[ManagerNameId]].Save();
     }
-    MemoryManager.SaveOverlord();
+    Overmind.Complete();
 }
 
 module.exports.InitSwarmData = InitializeTick;
