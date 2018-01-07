@@ -25,7 +25,6 @@
         this.HiveMind.PostNewTask(HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Default, [('GenPop_' + i)]));
     }
 
-    console.log('pingping');
     this.Brain.TaskMemory = this.HiveMind.TaskMemory;
 
     EndFunction();
@@ -61,6 +60,16 @@ Room.prototype.Activate = function () {
 Room.prototype.Complete = function () {
     StartFunction('Room.Complete');
     this.HiveMind.ResolvePendingTasks();
+    if (this.HiveMind.PendingTasks.length > 0) {
+        for (let i = 0; i < this.HiveMind.PendingTasks.length; i++) {
+            // Try to spawn a creep for each pending task.
+        }
+    } else if (this.HiveMind.PendingRequests.length > 0) {
+        const unemployedCreeps = this.HiveMind.PendingRequests;
+        for (let i = 0; i < this.HiveMind.PendingRequests.length; i++) {
+            // Try to find a job for the creep.
+        }
+    }
     this.Brain.TaskMemory = this.HiveMind.TaskMemory;
     EndFunction();
     return OK;
