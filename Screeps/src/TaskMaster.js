@@ -84,7 +84,7 @@ const TaskMaster = function TaskMaster(room) {
     EndFunction();
 };
 
-TaskMaster.prototype['NewTasks'] = {};
+TaskMaster.prototype.NewTasks = {};
 TaskMaster.prototype.NewTasks[TaskType_Enum.General] = function (taskId, sourceId) {
     StartFunction(StartFunctionId + '.NewTasks[MakeSourceHarvesterTask]');
     const taskArgs = {};
