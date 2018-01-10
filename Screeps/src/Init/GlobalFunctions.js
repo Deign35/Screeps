@@ -3,7 +3,7 @@ global['StartFunction'] = Debug['CallStack']['Push'];
 global['EndFunction'] = Debug['CallStack']['Pop'];
 global['Reset'] = function () { Memory.RESET = true; return OK; };
 
-global['CreateBody'] = function (bodyparts) {
+global['CreateBody'] = function (bodyParts) {
     let bodyList = [];
     for (let i = 0, length = bodyParts.length; i < length; i++) {
         const part = bodyParts[i];
@@ -11,6 +11,8 @@ global['CreateBody'] = function (bodyparts) {
             bodyList.push(part[1]);
         }
     }
+
+    return bodyList;
 }
 
 global['CanSpawnBody'] = function (spawner, body) {

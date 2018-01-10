@@ -9,15 +9,16 @@
 
     for (let i = 0, length = sources.length; i < length; i++) {
         // if i have enough energy and a storage/container to drop on to.
-        this.HiveMind.PostNewTask(HiveMind.CreateTaskFromProfile(TaskProfile_Enum.PrimeHarvester, [id, sources[i].pos]));
+        this.HiveMind.PostNewTask(HiveMind.CreateTaskFromProfile(TaskProfile_Enum.PrimeHarvester, [sources[i].id, sources[i].pos]));
     }
 
     const upgraderTask = HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Upgrader);
-    upgraderTask.SetArgument(TaskArgs_Enum.Body, CreateBody([[1, WORK], [2, MOVE], [2, CARRY]]));
+    upgraderTask.SetArgument(TaskArgs_Enum.Body, CreateBody([...[1, WORK], [2, MOVE], [2, CARRY]]));
     // do things like make the body
     this.HiveMind.PostNewTask(upgraderTask);
 
     const sweeperTask = HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Sweeper, [this.controller.pos]);
+    sweeperTask.SetArgument(TaskArgs_Enum.Body, CreateBody([...[1, WORK], [2, MOVE], [2, CARRY]]));
     // do things like make the body
     this.HiveMind.PostNewTask(sweeperTask);
 
