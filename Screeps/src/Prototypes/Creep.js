@@ -1,13 +1,31 @@
-﻿Creep.prototype.ExecuteCommand = function (command) {
-    StartFunction('Creep[' + this.id + '].ExecuteCommand(' + command.Command + ')');
-    let actionResult = OK;
+﻿Creep.prototype.ExecuteCommand = function (task) {
+    //StartFunction('Creep[' + this.id + '].ExecuteCommand(' + command.Command + ')');
+
+    const actionList = task.taskArgs[TaskArgs_Enum.ActionList];
+    let taskMem = task.Cache;
+
+    let commands = actionList[taskMem[TaskMemory_Enum.ActionIndex]]['Commands'];
+    let command = commands[taskMem[TaskMemory_Enum.CommandIndex]];
+    let args = [];
+    if (command['Action'] == CreepCommand_Enum.WaitAt) {
+        args.push(task.GetArgument(TaskArgs_Enum.AnchorPos));
+    }
+    if (command['Action'] == CreepCommand_Enum.Harvest) {
+        let targets = task.GetArgument(TaskArgs_Enum.FixedTargets);
+        let target = Game.getObjectById(targets[command['FixedTarget']]);
+        args.push(target);
+    }
+    const result = this['' + command['Action']].apply(this, args);
+    console.log(result);
+    // resolve the result.
+
+    task.Cache = taskMem;
+    EndFunction();
+    return OK;
+    /*let actionResult = OK;
 
     let commandExe = command;
     let commandTarget = 'target';
-    if (this.Brain.CommandData['ResourceCommand']) {
-        commandTarget = 'resourceTarget';
-        commandExe = this.Brain.CommandData['ResourceCommand'];
-    }
 
     let commandArgs = Object.create(commandExe.CommandArgs);
     const commandRequiresTarget = commandArgs[0] == commandTarget;
@@ -33,9 +51,9 @@
         // Need to set up to handle Next/RunAgain? (i dont think so)
     }
     const response = this.DefaultCreepCommandResponse(commandExe, actionResult);
-
+    
     EndFunction();
-    return response;
+    return response;*/
 }
 
 Creep.prototype.DefaultCreepCommandResponse = function (command, commandResult) {

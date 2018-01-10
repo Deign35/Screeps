@@ -70,6 +70,10 @@ Room.prototype.Complete = function () {
                 const name = 'Spawn1_' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE, MOVE], name);
                 this.HiveMind.RequestTask(new Delegate(CallbackType_Enum.Room, this.name, 'SpawnCallback'));
+                let newBrain = {};
+                newBrain.CommandData = {}; // For saving data for the current command
+                newBrain['CurrentCommand'] = {};
+                Overmind.SaveData(name, newBrain);
                 break;
 
                 // This is the hive...

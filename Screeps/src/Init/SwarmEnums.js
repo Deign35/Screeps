@@ -76,6 +76,7 @@ const Enums = {
         ActionIndex: 'actionIndex',
         SlaveCallback: 'slave',
         RetryCount: 'retryCount',
+        CommandIndex: 'commandIndex',
     },
     TaskProfile_Enum: {
         Default: 'default',

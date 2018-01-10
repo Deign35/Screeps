@@ -19,3 +19,12 @@ Creep.prototype.findAndDeliver = function (commandArgs) {
     // Hopefully make it so I don't need this command at all.
     return this.transfer(commandArgs);
 };
+
+Creep.prototype.waitAt = function (pos) {
+    let tarPos = new RoomPosition(pos.x, pos.y, pos.roomName);
+    if (this.pos.isEqualTo(tarPos)) {
+        return OK;
+    }
+    this.moveTo(tarPos);
+    return ERR_TIRED;
+}
