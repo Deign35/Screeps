@@ -31,13 +31,10 @@ Task.FromData = function (taskData) {
 }
 
 Task.prototype.Evaluate = function () {
+    if (!this.Cache[TaskMemory_Enum.SlaveCallback]) { return TaskResults_Enum.ContractorRequired; }
     // Need a callback delegate here.  Perhaps directly to the object the request was made for/by?
     // Or does the callback delegate go to the task fulfiller?
-    if (Memory.Check) {
-        return TaskResults_Enum.Incomplete;
-    }
-    Memory.Check = true;
-    return TaskResults_Enum.ContractorRequired;
+    return TaskResults_Enum.Incomplete;
 };
 
 module.exports = Task;

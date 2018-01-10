@@ -74,6 +74,7 @@ const Enums = {
     },
     TaskMemory_Enum: {
         ActionIndex: 'actionIndex',
+        SlaveCallback: 'slave',
         RetryCount: 'retryCount',
     },
     TaskProfile_Enum: {

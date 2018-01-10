@@ -57,7 +57,7 @@ const CreepManager = { // Is this class redundant with the HiveMind?
     ActivateCreeps: function () {
         StartFunction('CreepManager.ActivateCreeps');
         for (const name in this.ManagerData['Creeps']) {
-            Game.creeps[name].Activate();
+            //Game.creeps[name].Activate();
         }
         EndFunction();
         return OK;

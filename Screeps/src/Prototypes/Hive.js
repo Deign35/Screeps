@@ -96,5 +96,5 @@ Room.prototype.SpawnCallback = function (task) {
     // I dont have access to the creep information anymore.  Should take care of that some other way.
     //task.CacheData = {};
     console.log('callback');
-    task.Cache['id'] = 'Spawn1_' + Game.time;
+    task.Cache[TaskMemory_Enum.SlaveCallback] = 'Spawn1_' + Game.time;
 }
