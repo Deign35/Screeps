@@ -13,6 +13,7 @@
     }
 
     const upgraderTask = HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Upgrader);
+    upgraderTask.SetArgument(TaskArgs_Enum.Body, CreateBody([[1, WORK], [2, MOVE], [2, CARRY]]));
     // do things like make the body
     this.HiveMind.PostNewTask(upgraderTask);
 
@@ -63,6 +64,19 @@ Room.prototype.Complete = function () {
     if (this.HiveMind.PendingTasks.length > 0) {
         for (let i = 0; i < this.HiveMind.PendingTasks.length; i++) {
             // Try to spawn a creep for each pending task.
+            let pendingTask = this.HiveMind.PendingTasks[i];
+            if (Game.spawns['Spawn1'].spawnCreep(pendingTask.GetArgument(TaskArgs_Enum.Body), 'Worker', { dryRun: true })) {
+                const name = 'Spawn1' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep(pendingTask.GetArgument(TaskArgs_Enum.Body), name);
+                this.HiveMind.RequestTask(new Delegate(CallbackType_Enum.Room, this.name, 'SpawnCallback'));
+                break;
+
+                // This is the hive...
+                // Set the creep up with a job.
+                // What about creeps moving between rooms, do they still need a creep manager?
+                // Or is assigning the creep to the new room going to be good enough?
+                // 
+            }
         }
     } else if (this.HiveMind.PendingRequests.length > 0) {
         const unemployedCreeps = this.HiveMind.PendingRequests;
@@ -74,3 +88,7 @@ Room.prototype.Complete = function () {
     EndFunction();
     return OK;
 };
+
+Room.prototype.SpawnCallback = function (task) {
+    // I dont have access to the creep information anymore.  Should take care of that some other way.
+}

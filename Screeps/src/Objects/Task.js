@@ -10,6 +10,10 @@ Task.prototype.SetArgument = function(argId, value) {
     this.taskArgs[argId] = value;
 }
 
+Task.prototype.GetArgument = function (argId) {
+    return this.taskArgs[argId] || {}; // default empty obj????
+}
+
 Task.prototype.ToData = function () {
     const TaskData = {
         TaskArgs: this.taskArgs,
