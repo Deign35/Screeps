@@ -66,9 +66,9 @@ Room.prototype.Complete = function () {
         for (let i = 0; i < this.HiveMind.PendingTasks.length; i++) {
             // Try to spawn a creep for each pending task.
             let pendingTask = this.HiveMind.PendingTasks[i];
-            if (Game.spawns['Spawn1'].spawnCreep(pendingTask.GetArgument(TaskArgs_Enum.Body), 'Worker', { dryRun: true })) {
-                const name = 'Spawn1' + Game.time;
-                Game.spawns['Spawn1'].spawnCreep(pendingTask.GetArgument(TaskArgs_Enum.Body), name);
+            if (Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE, MOVE], 'Worker', { dryRun: true }) == OK) {
+                const name = 'Spawn1_' + Game.time;
+                Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE, MOVE], name);
                 this.HiveMind.RequestTask(new Delegate(CallbackType_Enum.Room, this.name, 'SpawnCallback'));
                 break;
 
@@ -85,6 +85,8 @@ Room.prototype.Complete = function () {
             // Try to find a job for the creep.
         }
     }
+
+    this.HiveMind.ResolvePendingTasks();
     this.Brain.TaskMemory = this.HiveMind.TaskMemory;
     EndFunction();
     return OK;
@@ -92,4 +94,7 @@ Room.prototype.Complete = function () {
 
 Room.prototype.SpawnCallback = function (task) {
     // I dont have access to the creep information anymore.  Should take care of that some other way.
+    //task.CacheData = {};
+    console.log('callback');
+    task.Cache['id'] = 'Spawn1_' + Game.time;
 }

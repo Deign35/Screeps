@@ -42,7 +42,6 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
             if(result == Done) { delete this.TaskMemory[task.id] }
             if(result == Reassign) { PendingTasks.push(task.id); }
         */
-        /*
         StartFunction(this.name + '.UpdateTasks()');
         for (const id in this.TaskMemory) {
             let task = Task.FromData(this.TaskMemory[id]);
@@ -55,10 +54,10 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
                 // What else needs to be done here?
                 delete this.TaskMemory[id];
             } else if (result == TaskResults_Enum.ContractorRequired) {
-                this.PendingTasks.push(this.TaskMemory[id]);
+                this.PendingTasks.push(id);
             }
         }
-        EndFunction();*/
+        EndFunction();
     }
 
     EvaluateTask(task) {
@@ -72,7 +71,7 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
             // TODO: Find a way to pick the best option instead of just first to go.
             const delegate = this.PendingRequests.shift();
             delegate.Callback(task);
-            this.TaskMemory[task.taskId] = task.ToData();
+            this.TaskMemory[task.taskArgs.taskId] = task.ToData();
         }
         EndFunction();
         return OK;
