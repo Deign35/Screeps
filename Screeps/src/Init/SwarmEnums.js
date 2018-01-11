@@ -1,7 +1,6 @@
 const Enums = {
     Managers_Enum: {
         HiveManager: 'HiveManager',
-        CreepManager: 'CreepManager',
     },
 
     CreepCommand_Enum: {
@@ -35,7 +34,6 @@ const Enums = {
         Retry: 'RE',
         Continue: 'CN',
 
-        CheckCarryIsFull: 'CF',
         CheckPosition: 'CP',
         ReqTarget: 'RT',
         Complete: 'CM',
@@ -52,6 +50,7 @@ const Enums = {
         ContractorRequired: 'CR',
         Incomplete: 'IN',
         NextCommand: 'NC',
+        Retry: 'RT',
     },
 
     ActionArgs_Enum: {
@@ -65,7 +64,6 @@ const Enums = {
 
     CallbackType_Enum: {
         GameObject: 'GO',
-        Id: 'ID',
         Room: 'RM',
     },
 
@@ -88,20 +86,28 @@ const Enums = {
         TaskId: 'TI',
         TaskProfile: 'TP',
     },
+
     TaskMemory_Enum: {
         ActionIndex: 'AI',
         CommandIndex: 'CI',
         RetryCount: 'RC',
         Slave: 'SV',
         TargetId: 'TI',
+        TargetList: 'TL',
         TargetPos: 'TP',
     },
+
     TaskProfile_Enum: {
         Default: 'DE',
         PrimeHarvester: 'PH',
         Sweeper: 'SW',
         Transporter: 'TR',
         Upgrader: 'UP',
+    },
+
+    TaskExecutionResult_Enum: {
+        ActionResult: 'actionResult',
+        Target: 'target',
     },
 
     // Offensive Unit names: Stinger, Roach, Wasp, Devourer, 

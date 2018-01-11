@@ -44,18 +44,23 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
         */
         StartFunction(this.name + '.UpdateTasks()');
         for (const id in this.TaskMemory) {
-            let task = Task.FromData(this.TaskMemory[id]);
-            let result = this.EvaluateTask(task);
-            this.TaskMemory[id] = task.ToData();
-            if (result == TaskResults_Enum.Incomplete) {
-                // Do nothing
-                continue;
-            } else if (result == TaskResults_Enum.Complete) {
-                // What else needs to be done here?
-                delete this.TaskMemory[id];
-            } else if (result == TaskResults_Enum.ContractorRequired) {
-                this.PendingTasks.push(id);
-            }
+            let result = TaskResults_Enum.Incomplete;
+            let numAttempts = 0;
+            do {
+                numAttempts++;
+                let task = Task.FromData(this.TaskMemory[id]);
+                result = this.EvaluateTask(task);
+                this.TaskMemory[id] = task.ToData();
+                if (result == TaskResults_Enum.Incomplete) {
+                    // Do nothing
+                    continue;
+                } else if (result == TaskResults_Enum.Complete) {
+                    // What else needs to be done here?
+                    delete this.TaskMemory[id];
+                } else if (result == TaskResults_Enum.ContractorRequired) {
+                    this.PendingTasks.push(id);
+                }
+            } while (result == TaskResults_Enum.Retry && numAttempts < 10);
         }
         EndFunction();
     }
@@ -69,9 +74,9 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
         while (this.PendingTasks.length > 0 && this.PendingRequests.length > 0) {
             const task = Task.FromData(this.TaskMemory[this.PendingTasks.shift()]);
             // TODO: Find a way to pick the best option instead of just first to go.
-            const delegate = this.PendingRequests.shift();
-            delegate.Callback(task);
-            this.TaskMemory[task.taskArgs.taskId] = task.ToData();
+            const delegate = Delegate.FromData(this.PendingRequests.shift());
+            delegate.Callback([task]);
+            this.TaskMemory[task.GetArgument(TaskArgs_Enum.TaskId)] = task.ToData();
         }
         EndFunction();
         return OK;

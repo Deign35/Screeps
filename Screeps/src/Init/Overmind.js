@@ -19,6 +19,9 @@ const Overmind = {
                 delete Memory.RESET;
             }
             Memory.InitOverRun = 0;
+        } else {
+            Memory.RESET = true;
+            delete Memory.Overmind;
         }
 
         console.log('Reset Overmind Completed[' + initResult + '] in ' + (Game.cpu.getUsed() - startInit) + ' ticks.');

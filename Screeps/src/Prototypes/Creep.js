@@ -1,51 +1,62 @@
-﻿Creep.prototype.ExecuteCommand = function (task) {
-    StartFunction('Creep[' + this.id + '].ExecuteCommand(' + task.GetArgument(TaskArgs_Enum.TaskId) + ')');
+﻿Creep.prototype.ExecuteTask = function (task) {
+    StartFunction('Creep[' + this.id + '].ExecuteTask(' + task.GetArgument(TaskArgs_Enum.TaskId) + ')');
+    const ExecutionResult = {};
 
-    const actionList = task.taskArgs[TaskArgs_Enum.ActionList];
+    const actionList = task.GetArgument(TaskArgs_Enum.ActionList);
 
-    let command = actionList[taskMem[TaskMemory_Enum.ActionIndex]];
-    let argsList = command[ActionArgs_Enum.ArgList];
+    let command = actionList[task.Cache[TaskMemory_Enum.ActionIndex]];
+    let argsList = command[ActionArgs_Enum.ArgsList];
     let args = [];
-    let target = {};
-    while (argsList.length > 0) {
-        let arg = argsList.pop();
+    for (let i = 0, length = argsList.length; i < length; i++) {
+        let arg = argsList[i];
         if (arg == ActionArgs_Enum.TargetType) {
-            if (command.TargetType == CreepTargetType_Enum.FixedTarget) {
-                target = Game.getObjectById(task[TaskArgs_Enum.FixedTargets][command.TargetArg]);
+            let target = {};
+            if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.FixedTarget) {
+                target = Game.getObjectById(task.GetArgument(TaskArgs_Enum.FixedTargets)[command[ActionArgs_Enum.TargetArg]]);
                 args.push(target);
-            } else if (command.TargetType == CreepTargetType_Enum.TargetList) {
+            } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.TargetList) {
                 console.log('NOT IMPLEMENTED');
-            } else if (command.TargetType == CreepTargetType_Enum.Callback) {
-                target = Game.getObjectById(command.TargetArg.Callback(task));
+            } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.Callback) {
+                let callbackDelegate = Delegate.FromData(command[ActionArgs_Enum.TargetArg]);
+                let callbackArgs = [];
+                callbackArgs.push(task);
+                callbackArgs.push(command);
+                callbackDelegate.Callback(callbackArgs);
+                target = Game.getObjectById(task.Cache[TaskMemory_Enum.TargetId]);
                 args.push(target);
             }
+
+            if (!target) {
+                ExecutionResult[TaskExecutionResult_Enum.ActionResult] = ERR_INVALID_TARGET;
+                return ExecutionResult;
+            }
+            ExecutionResult[TaskExecutionResult_Enum.Target] = target;
         }
         if (arg == ActionArgs_Enum.ResourceType) {
             args.push(command[ActionArgs_Enum.ResourceType]);
         }
     }
 
-    const actionResult = this['' + command['Action']].apply(this, args);
-    this.DefaultCreepCommandResponse(task, target, actionResult);
-    
+    ExecutionResult[TaskExecutionResult_Enum.ActionResult] = this[command[ActionArgs_Enum.Action]].apply(this, args);
     EndFunction();
-    return OK;
+    return ExecutionResult;
 }
 
-Creep.prototype.DefaultCreepCommandResponse = function (task, target, taskResult) {
+Creep.prototype.DefaultCreepCommandResponse = function (task, target, actionResult) {
     StartFunction('Creep.DefaultCreepCommandResponse');
+    let command = task.GetArgument(TaskArgs_Enum.ActionList)[task.Cache[TaskMemory_Enum.ActionIndex]];
 
     const expectedResponses = command[ActionArgs_Enum.Responses];
     if (!expectedResponses[actionResult]) {
         console.log('DO NOT KNOW HOW TO PROCESS THIS');
-        throw Error('Task to do ' + command['Action'] + ' couldnt handle response ' + actionResult);
+        throw Error('Task to do ' + command[ActionArgs_Enum.Action] + ' couldnt handle response ' + actionResult);
     }
 
     const response = expectedResponses[actionResult];
 
     if (response == CreepCommandResponse_Enum.Move) {
         // (TODO): Need to find a good way to cache this.
-        let moveResult = this.moveTo(task.Cache[TaskMemory_Enum.TargetPos], {
+        let pathResult = this.pos.findPathTo(target, {
             visualizePathStyle: {
                 fill: 'transparent',
                 stroke: 'green', // Const?
@@ -56,6 +67,7 @@ Creep.prototype.DefaultCreepCommandResponse = function (task, target, taskResult
             reusePath: 5,
 
         });
+        let moveResult = this.moveByPath(pathResult);
         // Do the move check here and translate responseResult to something else if needed.
         // i.e. if NO PATH -> response = Next
         /*if (moveResult == ERR_NO_PATH) {
@@ -64,11 +76,37 @@ Creep.prototype.DefaultCreepCommandResponse = function (task, target, taskResult
 
         console.log('MoveResult: ' + moveResult);
     }
-    if (response == CreepCommandResponse_Enum.CheckCarryIsFull) {
+    if (response == CreepCommandResponse_Enum.ReqTarget) {
+        delete task.Cache[TaskMemory_Enum.TargetId];
+        delete task.Cache[TaskMemory_Enum.TargetPos];
+        response = CreepCommandResponse_Enum.Retry;
+    }
 
+    if (response == CreepCommandResponse_Enum.Continue) {
+        // do nothing
     }
 
     if (response == CreepCommandResponse_Enum.Retry) {
+        if (task.Cache[TaskMemory_Enum.RetryCount] < 5) {
+            task.Cache[TaskMemory_Enum.RetryCount] += 1;
+        } else {
+            response = CreepCommandResponse_Enum.Next;
+            console.log(this.name + ' retry max.(' + command.id + ')');
+            task.Cache[TaskMemory_Enum.RetryCount] = 0;
+        }
+    } else {
+        task.Cache[TaskMemory_Enum.RetryCount] = 0;
+    }
+
+    if (response == CreepCommandResponse_Enum.Complete) {
+        // Need to end the task completely.  It is complete.
+    }
+
+    if (response == CreepCommandResponse_Enum.Next) {
+        task.Next();
+    }
+
+    /*if (response == CreepCommandResponse_Enum.Retry) {
         if (this.Brain['retryCount'] < 5) {
             this.Brain['retryCount'] += 1;
         } else {
@@ -106,15 +144,15 @@ Creep.prototype.DefaultCreepCommandResponse = function (task, target, taskResult
         //console.log('Command: ' + command.Command + ' result: ' + commandResult + ' response: ' + response + ' responseResult: ' + responseResult);
         //console.log(this.Brain.CommandData['target']);
         //this.Brain.CurrentCommand = CreepManager.CreateNewCommand('say', null, ['Job Canceled: ' + this.Brain.CurrentCommand.Command + ': ' + commandResult]);*/
-        runAgain = this.room.RequestContractJob(this);
+        //runAgain = this.room.RequestContractJob(this);
         // Request a new command from it's hive.  this.room is not good!
         // perhaps the creep shouldn't associate to a specific hive anyway???
-    }
+    //}
 
     //console.log('Command: ' + command.Command + ' result: ' + commandResult + ' response: ' + response + ' runAgain: ' + runAgain);
     EndFunction();
-    return runAgain;
-}*/
+    return OK;
+}
 
 Creep.prototype.Activate = function () {
     StartFunction('Creep[' + this.name + '].Activate');

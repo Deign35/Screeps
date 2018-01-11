@@ -1,31 +1,38 @@
-﻿Room.prototype.TransferTargetCallback = function (task) {
+﻿Room.prototype.TransferTargetCallback = function (task, command) {
+    StartFunction('Room.TransferTargetCallback');
     if (!task.Cache[TaskMemory_Enum.TargetId]) {
-        if (task[ActionArgs_Enum.Action] == CreepCommand_Enum.Transfer) {
+        if (command[ActionArgs_Enum.Action] == CreepCommand_Enum.Transfer) {
             // Use the room to find a creep that should receive a transfer.
 
             const foundStructures = this.find(FIND_STRUCTURES, {
                 filter: function (structure) {
-                    return ((structure.StructureType == STRUCTURE_SPAWN ||
-                        structure.StructureType == STRUCTURE_EXTENSION ||
-                        structure.StructureType == STRUCTURE_LINK || 
-                        //structure.StructureType == STRUCTURE_NUKER ||
-                        //structure.StructureType == STRUCTURE_LAB ||
-                        structure.StructureType == STRUCTURE_TOWER) &&
-                        structure.energy < structure.energyCapacity) ||
-
-                        ((structure.StructureType == STRUCTURE_CONTAINER ||
-                        structure.StructureType == STRUCTURE_STORAGE) &&
+                    console.log("CHECKING: " + structure.structureType);
+                    if (structure.structureType == STRUCTURE_SPAWN ||
+                        structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_LINK ||
+                        structure.structureType == STRUCTURE_TOWER) {
+                        console.log('structureType found + energy/capacity: ' + structure.energy + '/' + structure.energyCapacity);
+                        return structure.energy < structure.energyCapacity;
+                    }
+                    if (structure.structureType == STRUCTURE_CONTAINER ||
+                        structure.structureType == STRUCTURE_STORAGE) {
+                        console.log('structureType found + energy/capacity: ' + structure.store[RESOURCE_ENERGY] + '/' + structure.storeCapacity);
                         // Idea: add a storeCapacity array instead of the one number
-                        structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
+                        return structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
+                    }
+                    console.log('structureType failed...');
+                    return false;
                 }
             });
+            const closest = Game.creeps[task.Cache[TaskMemory_Enum.Slave]].pos.findClosestByRange(foundStructures);
+            if (closest) {
+                task.Cache[TaskMemory_Enum.TargetId] = closest.id;
+                task.Cache[TaskMemory_Enum.TargetPos] = closest.pos;
+            }
         }
-        const closest = Game.creeps[task.Cache[TaskMemory_Enum.Slave]].pos.findClosestByRange(foundStructures);
-        task.Cache[TaskMemory_Enum.TargetId] = closest.id;
-        task.Cache[TaskMemory_Enum.TargetPos] = closest.pos;
     }
-
-    return task.Cache[TaskMemory_Enum.TargetId];
+    EndFunction();
+    return OK;
 };
 
 Room.prototype.InitMemory = function () {
@@ -51,27 +58,35 @@ Room.prototype.InitMemory = function () {
         const ActionList = [];
         let harvestAction = {};
         harvestAction[ActionArgs_Enum.Action] = CreepCommand_Enum.Harvest;
-        harvestAction[ActionArgs_Enum.ArgList] = [ActionArgs_Enum.TargetType];
         harvestAction[ActionArgs_Enum.TargetType] = CreepTargetType_Enum.FixedTarget;
         harvestAction[ActionArgs_Enum.TargetArg] = 0;
+
+        let harvestArgs = [];
+        harvestArgs.push(ActionArgs_Enum.TargetType);
+        harvestAction[ActionArgs_Enum.ArgsList] = harvestArgs;
 
         let harvestResponses = {};
         harvestResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
         harvestResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Continue;
-        harvestResponses[OK] = CreepCommandResponse_Enum.CheckCarryIsFull;
+        harvestResponses[OK] = CreepCommandResponse_Enum.Continue;
+        harvestResponses[ERR_FULL] = CreepCommandResponse_Enum.Next;
         harvestAction[ActionArgs_Enum.Responses] = harvestResponses;
 
         ActionList.push(harvestAction);
 
         let transferAction = {};
         transferAction[ActionArgs_Enum.Action] = CreepCommand_Enum.Transfer;
-        transferAction[ActionArgs_Enum.ArgList] = [ActionArgs_Enum.TargetType, ActionArgs_Enum.ResourceType];
+        transferAction[ActionArgs_Enum.ArgsList] = [ActionArgs_Enum.TargetType, ActionArgs_Enum.ResourceType];
         transferAction[ActionArgs_Enum.TargetType] = CreepTargetType_Enum.Callback;
         transferAction[ActionArgs_Enum.TargetArg] = new Delegate(CallbackType_Enum.Room, this.name, 'TransferTargetCallback');
         transferAction[ActionArgs_Enum.ResourceType] = RESOURCE_ENERGY;
+        let transferArgs = [];
+        transferArgs.push(ActionArgs_Enum.TargetType);
+        transferArgs.push(ActionArgs_Enum.ResourceType);
+        transferAction[ActionArgs_Enum.ArgsList] = transferArgs;
 
         let transferResponses = {};
-        transferResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.ReqTarget;
+        transferResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.Next;
         transferResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Next;
         transferResponses[ERR_FULL] = CreepCommandResponse_Enum.ReqTarget;
         transferResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
@@ -114,11 +129,11 @@ Room.prototype.Init = function () {
     const newSites = _.without(allSites, this.Brain.PrevConstructionSites);
     this.Brain.PrevConstructionSites = allSites;
 
-    for (let i = 0, length = newSites.length; i < length; i++) {
+    /*for (let i = 0, length = newSites.length; i < length; i++) {
         const builderTask = HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Default, ['CS_' + newSites[i]]);
         // stuff
         this.HiveMind.PostNewTask(builderTask);
-    }
+    }*/
 
     EndFunction();
     return OK;
@@ -142,10 +157,10 @@ Room.prototype.Complete = function () {
                 const name = 'Spawn1_' + Game.time;
                 Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE, MOVE], name);
                 this.HiveMind.RequestTask(new Delegate(CallbackType_Enum.Room, this.name, 'SpawnCallback'));
-                let newBrain = {};
+                /*let newBrain = {};
                 newBrain.CommandData = {}; // For saving data for the current command
                 newBrain['CurrentCommand'] = {};
-                Overmind.SaveData(name, newBrain);
+                Overmind.SaveData(name, newBrain);*/
                 break;
 
                 // This is the hive...
@@ -170,7 +185,5 @@ Room.prototype.Complete = function () {
 
 Room.prototype.SpawnCallback = function (task) {
     // I dont have access to the creep information anymore.  Should take care of that some other way.
-    //task.CacheData = {};
-    console.log('callback');
-    task.Cache[TaskMemory_Enum.SlaveCallback] = 'Spawn1_' + Game.time;
+    task.Cache[TaskMemory_Enum.Slave] = 'Spawn1_' + Game.time;
 }
