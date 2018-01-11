@@ -49,55 +49,45 @@ Room.prototype.InitMemory = function () {
         let sourceHarvesterTask = new Task();
         sourceHarvesterTask.SetArgument(TaskArgs_Enum.TaskId, 'Harvester_' + sources[i].id);
         sourceHarvesterTask.SetArgument(TaskArgs_Enum.Body, [MOVE, CARRY, WORK]);
-        //sourceHarvesterTask.SetArgument(TaskArgs_Enum.AnchorPos, sources[i].pos);
 
         let fixedTargets = [];
         fixedTargets.push(sources[i].id);
+        fixedTargets.push(this.controller.id);
         sourceHarvesterTask.SetArgument(TaskArgs_Enum.FixedTargets, fixedTargets);
 
         const ActionList = [];
-        let harvestAction = {};
-        harvestAction[ActionArgs_Enum.Action] = CreepCommand_Enum.Harvest;
-        harvestAction[ActionArgs_Enum.TargetType] = CreepTargetType_Enum.FixedTarget;
-        harvestAction[ActionArgs_Enum.TargetArg] = 0;
-
-        let harvestArgs = [];
-        harvestArgs.push(ActionArgs_Enum.TargetType);
-        harvestAction[ActionArgs_Enum.ArgsList] = harvestArgs;
-
-        let harvestResponses = {};
-        harvestResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
-        harvestResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Continue;
-        harvestResponses[OK] = CreepCommandResponse_Enum.Continue;
-        harvestResponses[ERR_FULL] = CreepCommandResponse_Enum.Next;
-        harvestAction[ActionArgs_Enum.Responses] = harvestResponses;
-
-        ActionList.push(harvestAction);
-
-        let transferAction = {};
-        transferAction[ActionArgs_Enum.Action] = CreepCommand_Enum.Transfer;
-        transferAction[ActionArgs_Enum.ArgsList] = [ActionArgs_Enum.TargetType, ActionArgs_Enum.ResourceType];
-        transferAction[ActionArgs_Enum.TargetType] = CreepTargetType_Enum.Callback;
-        transferAction[ActionArgs_Enum.TargetArg] = new Delegate(CallbackType_Enum.Room, this.name, 'TransferTargetCallback');
-        transferAction[ActionArgs_Enum.ResourceType] = RESOURCE_ENERGY;
-        let transferArgs = [];
-        transferArgs.push(ActionArgs_Enum.TargetType);
-        transferArgs.push(ActionArgs_Enum.ResourceType);
-        transferAction[ActionArgs_Enum.ArgsList] = transferArgs;
-
-        let transferResponses = {};
-        transferResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.Next;
-        transferResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Next;
-        transferResponses[ERR_FULL] = CreepCommandResponse_Enum.ReqTarget;
-        transferResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
-        transferResponses[OK] = CreepCommandResponse_Enum.Continue;
-        transferAction[ActionArgs_Enum.Responses] = transferResponses;
-
-        ActionList.push(transferAction);
+        let harvestProfileArgs = [];
+        harvestProfileArgs.push(CreepTargetType_Enum.FixedTarget);
+        harvestProfileArgs.push(0);
+        ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Harvest, ));
+        let transferProfileArgs = [];
+        transferProfileArgs.push(this.name);
+        transferProfileArgs.push('TransferTargetCallback');
+        ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Transfer, transferProfileArgs));
+        ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Upgrade, 1));
 
         sourceHarvesterTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
         this.HiveMind.PostNewTask(sourceHarvesterTask);
     }
+
+    let upgraderTask = new Task();
+    upgraderTask.SetArgument(TaskArgs_Enum.TaskId, 'Upgrader_' + this.name);
+    upgraderTask.SetArgument(TaskArgs_Enum.Body, [MOVE, CARRY, WORK]);
+
+    let fixedTargets = [];
+    fixedTargets.push(this.controller.id);
+    upgraderTask.SetArgument(TaskArgs_Enum.FixedTargets, fixedTargets);
+
+    const ActionList = [];
+    // Harvest needs to just pick nearest -- CreepTargetType_Enum.Nearest
+    let harvestProfileArgs = [];
+    harvestProfileArgs.push(CreepTargetType_Enum.NearestStructure);
+    harvestProfileArgs.push(FIND_SOURCE);
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Harvest, harvestProfileArgs));
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Upgrade, 0));
+
+    upgraderTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
+    this.HiveMind.PostNewTask(upgraderTask);
 
     /*const upgraderTask = HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Upgrader);
     upgraderTask.SetArgument(TaskArgs_Enum.Body, CreateBody([...([1, WORK], [2, MOVE], [2, CARRY])]));

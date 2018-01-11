@@ -33,6 +33,7 @@ const Enums = {
         CancelCommands: 'XX',
         Retry: 'RE',
         Continue: 'CN',
+        Reset: 'RS',
 
         CheckPosition: 'CP',
         ReqTarget: 'RT',
@@ -43,13 +44,14 @@ const Enums = {
         FixedTarget: 'FT1',
         TargetList: 'TL',
         Callback: 'CB',
+        NearestStructure: 'NS',
+        Find: 'FD',
     },
 
     TaskResults_Enum: {
         Complete: 'CM',
         ContractorRequired: 'CR',
         Incomplete: 'IN',
-        NextCommand: 'NC',
         Retry: 'RT',
     },
 

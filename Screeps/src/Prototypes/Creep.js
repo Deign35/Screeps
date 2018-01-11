@@ -24,6 +24,10 @@
                 callbackDelegate.Callback(callbackArgs);
                 target = Game.getObjectById(task.Cache[TaskMemory_Enum.TargetId]);
                 args.push(target);
+            } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.Find) {
+                // this.room.find(targetArg);
+            } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.NearestStructure) {
+                // find the structure closets based on targetArg
             }
 
             if (!target) {

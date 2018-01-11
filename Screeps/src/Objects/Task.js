@@ -41,7 +41,10 @@ Task.prototype.Evaluate = function () {
     // Or does the callback delegate go to the task fulfiller?
     const creep = Game.creeps[this.Cache[TaskMemory_Enum.Slave]];
     if (!creep) { return TaskResults_Enum.ContractorRequired; }
-    if (creep.spawning) { return OK;}
+    if (creep.spawning) { return OK; }
+    StartFunction('Task.Evaluate');
+    let taskResult = TaskResults_Enum.Incomplete;
+
     creep.Brain = Overmind.LoadData(creep.name);
     let executionResult = creep.ExecuteTask(this);
     let command = this.GetArgument(TaskArgs_Enum.ActionList)[this.Cache[TaskMemory_Enum.ActionIndex]];
@@ -72,6 +75,7 @@ Task.prototype.Evaluate = function () {
         /*if (moveResult == ERR_NO_PATH) {
             response = CreepCommandResponse_Enum.Next;
         }*/
+        taskResult = TaskResults_Enum.Incomplete;
     }
     if (response == CreepCommandResponse_Enum.ReqTarget) {
         delete this.Cache[TaskMemory_Enum.TargetId];
@@ -81,12 +85,14 @@ Task.prototype.Evaluate = function () {
 
     if (response == CreepCommandResponse_Enum.Continue) {
         // do nothing
+        taskResult = TaskResults_Enum.Incomplete;
     }
 
     if (response == CreepCommandResponse_Enum.Retry) {
         console.log(this.Cache[TaskMemory_Enum.RetryCount]);
         if (this.Cache[TaskMemory_Enum.RetryCount] < 5) {
             this.Cache[TaskMemory_Enum.RetryCount] += 1;
+            taskResult = TaskResults_Enum.Incomplete;
         } else {
             response = CreepCommandResponse_Enum.Complete;
             console.log(this.name + ' retry max.(' + command.id + ')');
@@ -98,6 +104,7 @@ Task.prototype.Evaluate = function () {
 
     if (response == CreepCommandResponse_Enum.Complete) {
         // Need to end the task completely.  It is complete.
+        taskResult = TaskResults_Enum.Complete;
     }
 
     if (response == CreepCommandResponse_Enum.Next) {
@@ -112,11 +119,18 @@ Task.prototype.Evaluate = function () {
 
         this.Cache[TaskMemory_Enum.ActionIndex] = actionIndex;
         this.Cache[TaskMemory_Enum.Slave] = slave;
-        return TaskResults_Enum.Retry;
+        taskResult = TaskResults_Enum.Retry;
     }
 
-    //Overmind.SaveData(creep.name, creep.Brain);
-    return TaskResults_Enum.Incomplete;
+    if (response == CreepCommandResponse_Enum.Reset) {
+        let slave = this.Cache[TaskMemory_Enum.Slave];
+        this.InitCache();
+        this.Cache[TaskMemory_Enum.Slave] = slave;
+        taskResult = TaskResults_Enum.Incomplete;
+    }
+
+    EndFunction();
+    return taskResult;
 };
 
 module.exports = Task;
