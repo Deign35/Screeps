@@ -1,70 +1,51 @@
 ﻿Creep.prototype.ExecuteCommand = function (task) {
-    //StartFunction('Creep[' + this.id + '].ExecuteCommand(' + command.Command + ')');
+    StartFunction('Creep[' + this.id + '].ExecuteCommand(' + task.GetArgument(TaskArgs_Enum.TaskId) + ')');
 
     const actionList = task.taskArgs[TaskArgs_Enum.ActionList];
-    let taskMem = task.Cache;
 
-    let commands = actionList[taskMem[TaskMemory_Enum.ActionIndex]]['Commands'];
-    let command = commands[taskMem[TaskMemory_Enum.CommandIndex]];
+    let command = actionList[taskMem[TaskMemory_Enum.ActionIndex]];
+    let argsList = command[ActionArgs_Enum.ArgList];
     let args = [];
-    if (command['Action'] == CreepCommand_Enum.WaitAt) {
-        args.push(task.GetArgument(TaskArgs_Enum.AnchorPos));
-    }
-    if (command['Action'] == CreepCommand_Enum.Harvest) {
-        let targets = task.GetArgument(TaskArgs_Enum.FixedTargets);
-        let target = Game.getObjectById(targets[command['FixedTarget']]);
-        args.push(target);
-    }
-    const result = this['' + command['Action']].apply(this, args);
-    console.log(result);
-    // resolve the result.
-
-    task.Cache = taskMem;
-    EndFunction();
-    return OK;
-    /*let actionResult = OK;
-
-    let commandExe = command;
-    let commandTarget = 'target';
-
-    let commandArgs = Object.create(commandExe.CommandArgs);
-    const commandRequiresTarget = commandArgs[0] == commandTarget;
-    if (commandRequiresTarget && !this.Brain.CommandData[commandTarget]) {
-        if (commandExe.CommandTarget != null) {
-            this.SetTarget(Game.getObjectById(commandExe.CommandTarget));
+    let target = {};
+    while (argsList.length > 0) {
+        let arg = argsList.pop();
+        if (arg == ActionArgs_Enum.TargetType) {
+            if (command.TargetType == CreepTargetType_Enum.FixedTarget) {
+                target = Game.getObjectById(task[TaskArgs_Enum.FixedTargets][command.TargetArg]);
+                args.push(target);
+            } else if (command.TargetType == CreepTargetType_Enum.TargetList) {
+                console.log('NOT IMPLEMENTED');
+            } else if (command.TargetType == CreepTargetType_Enum.Callback) {
+                target = Game.getObjectById(command.TargetArg.Callback(task));
+                args.push(target);
+            }
         }
-
-        // Default is to do a FindTarget given the command.
-        if (!this.Brain.CommandData[commandTarget]) {
-            actionResult = this.FindTarget(commandExe);
+        if (arg == ActionArgs_Enum.ResourceType) {
+            args.push(command[ActionArgs_Enum.ResourceType]);
         }
     }
 
-    if (actionResult == OK) {
-        if (commandRequiresTarget) {
-            commandArgs[0] = Game.getObjectById(this.Brain.CommandData['target']);
-            this.CommandTarget = commandArgs[0];
-        }
-
-        actionResult = this[commandExe.Command].apply(this, commandArgs);
-    } else {
-        // Need to set up to handle Next/RunAgain? (i dont think so)
-    }
-    const response = this.DefaultCreepCommandResponse(commandExe, actionResult);
+    const actionResult = this['' + command['Action']].apply(this, args);
+    this.DefaultCreepCommandResponse(task, target, actionResult);
     
     EndFunction();
-    return response;*/
+    return OK;
 }
 
-Creep.prototype.DefaultCreepCommandResponse = function (command, commandResult) {
+Creep.prototype.DefaultCreepCommandResponse = function (task, target, taskResult) {
     StartFunction('Creep.DefaultCreepCommandResponse');
-    let runAgain = false;
-    let response = (command.CommandResponse && command.CommandResponse[commandResult]) || Consts.CreepCommandResponseDefaults[commandResult];
-    //console.log('Command: ' + command.Command + ' result: ' + commandResult + ' response: ' + response);
+
+    const expectedResponses = command[ActionArgs_Enum.Responses];
+    if (!expectedResponses[actionResult]) {
+        console.log('DO NOT KNOW HOW TO PROCESS THIS');
+        throw Error('Task to do ' + command['Action'] + ' couldnt handle response ' + actionResult);
+    }
+
+    const response = expectedResponses[actionResult];
 
     if (response == CreepCommandResponse_Enum.Move) {
         // (TODO): Need to find a good way to cache this.
-        let moveResult = this.moveTo(this.CommandTarget, {
+        let moveResult = this.moveTo(task.Cache[TaskMemory_Enum.TargetPos], {
             visualizePathStyle: {
                 fill: 'transparent',
                 stroke: 'green', // Const?
@@ -77,28 +58,14 @@ Creep.prototype.DefaultCreepCommandResponse = function (command, commandResult) 
         });
         // Do the move check here and translate responseResult to something else if needed.
         // i.e. if NO PATH -> response = Next
-        if (moveResult == ERR_NO_PATH) {
+        /*if (moveResult == ERR_NO_PATH) {
             response = CreepCommandResponse_Enum.Next;
-        }
-    }
+        }*/
 
-    if (response == CreepCommandResponse_Enum.RequireTarget) {
-        delete this.Brain.CommandData['target'];
-        runAgain = true;
-        response = CreepCommandResponse_Enum.Retry;
+        console.log('MoveResult: ' + moveResult);
     }
+    if (response == CreepCommandResponse_Enum.CheckCarryIsFull) {
 
-    if (response == CreepCommandResponse_Enum.RequireResources) {
-        if (!this.Brain.CommandData['HasObtainedResources']) {
-            runAgain = true;
-            response = CreepCommandResponse_Enum.Retry;
-            //this.Brain.CommandData['RequiresResources'] = true;
-            // (TODO): Find a place to get resources.
-            this.Brain.CommandData['ResourceCommand'] = CreepManager.CreateNewCommand(CreepCommand_Enum.Harvest, null, ['resourceTarget']);
-        } else {
-            response = CreepCommandResponse_Enum.Next;
-            delete this.Brain.CommandData['HasObtainedResources'];
-        }
     }
 
     if (response == CreepCommandResponse_Enum.Retry) {
@@ -147,7 +114,7 @@ Creep.prototype.DefaultCreepCommandResponse = function (command, commandResult) 
     //console.log('Command: ' + command.Command + ' result: ' + commandResult + ' response: ' + response + ' runAgain: ' + runAgain);
     EndFunction();
     return runAgain;
-}
+}*/
 
 Creep.prototype.Activate = function () {
     StartFunction('Creep[' + this.name + '].Activate');

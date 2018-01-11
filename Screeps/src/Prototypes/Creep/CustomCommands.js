@@ -26,5 +26,6 @@ Creep.prototype.waitAt = function (pos) {
         return OK;
     }
     this.moveTo(tarPos);
+    // Maybe this aught to be a new ERR_ const.... ERR_INCOMPLETE.
     return ERR_TIRED;
 }

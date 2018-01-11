@@ -55,7 +55,7 @@ function beginConsoleStats () {
   })
 }
 
-function formatStats (data) {
+function formatStats(data) {
   if (data[0] === '{') data = JSON.parse(data)
   if (typeof data === 'object') {
     return {
@@ -125,9 +125,9 @@ function processStats (data) {
 
 function getStats () {
   if (config.screeps.segment) {
-    return api.memory.segment.get(config.screeps.segment, config.screeps.shard || 'shard0').then(r => r.data)
+    return api.memory.segment.get(config.screeps.segment, config.screeps.shard || 'shard1').then(r => r.data)
   } else {
-    return api.memory.get('stats', config.screeps.shard || 'shard0').then(r => r.data)
+    return api.memory.get('stats', config.screeps.shard || 'shard1').then(r => r.data)
   }
 }
 
@@ -169,7 +169,7 @@ function setup () {
   setupRan = true
   let path = getConfigPaths().create
   if (path) {
-    fs.writeFileSync(path, fs.readFileSync(__dirname + '/config.js.sample'))
+    fs.writeFileSync(path, fs.readFileSync(__dirname + '/config.js'))
     editor(path, (code) => {
       if (!code) start()
     })
@@ -197,7 +197,7 @@ function getConfigPaths () {
     let dir = path.join(process.env.APPDATA, appname)
     try { fs.mkdirSync(dir) } catch (e) {}
     if (!fs.existsSync(path.join(dir, 'config.js'))) {
-      fs.writeFileSync(path.join(dir, 'config.js'), fs.readFileSync(path.join(__dirname, 'config.js.sample')))
+      fs.writeFileSync(path.join(dir, 'config.js'), fs.readFileSync(path.join(__dirname, 'config.js')))
     }
     paths.push(path.join(dir, 'config.js'))
   }

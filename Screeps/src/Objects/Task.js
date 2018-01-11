@@ -1,5 +1,5 @@
 ﻿const Task = function Task() {
-    this.taskArgs = {};
+    this.taskArgs = {}; // Change the name of taskArgs to ensure no one is attempting to access it directly.
     this.Cache = {
         Targets: {}
     };
@@ -32,10 +32,10 @@ Task.FromData = function (taskData) {
 }
 
 Task.prototype.Evaluate = function () {
-    if (!this.Cache[TaskMemory_Enum.SlaveCallback]) { return TaskResults_Enum.ContractorRequired; }
+    if (!this.Cache[TaskMemory_Enum.Slave]) { return TaskResults_Enum.ContractorRequired; }
     // Need a callback delegate here.  Perhaps directly to the object the request was made for/by?
     // Or does the callback delegate go to the task fulfiller?
-    const creep = Game.creeps[this.Cache[TaskMemory_Enum.SlaveCallback]];
+    const creep = Game.creeps[this.Cache[TaskMemory_Enum.Slave]];
     if (creep.spawning) { return OK;}
     creep.Brain = Overmind.LoadData(creep.name);
     creep.ExecuteCommand(this);

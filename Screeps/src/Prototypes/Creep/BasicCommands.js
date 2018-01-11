@@ -6,6 +6,7 @@ if (!Creep.prototype._harvest) {
     // Create our new function
     Creep.prototype.harvest = function (target) {
         // Add custom functionality
+        // Need to check if harvest is even for a source or not.
         if (this.carry.energy == this.carryCapacity) {
             return ERR_FULL;
         }

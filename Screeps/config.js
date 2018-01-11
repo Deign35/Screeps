@@ -1,7 +1,7 @@
 ﻿// Please set the configuration below
 module.exports = {
     screeps: {
-        token: 'f0e6b0a6-970e-4492-8103-d89f04d15908',
+        token: 'ae2ac21b-b395-491c-9cee-b6633e15b652',
         method: 'memory.stats', // Valid Options: 'console' 'memory.stats'
         //		segment: 99, // Uncomment this line and specify segment id if you're placing stats into segment
         shard: 'shard1',
@@ -18,5 +18,4 @@ module.exports = {
     },
     checkForUpdates: true,
     showRawStats: false, // This dumps stats to console on every push if enabled
-    sampleConfig: true // REMOVE THIS LINE BEFORE RUNNING
 }

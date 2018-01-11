@@ -22,6 +22,8 @@ const EntryPoint = function () {
             Memory.InitOverRun += 1;
         }
         Initializer.SaveSwarmData();
+
+        require('ScreepsPlus_screepsplus').collect_stats();
     } catch(error) {
         console.log('Error: ' + error);
         Debug.CallStack.OutputStackTrace();

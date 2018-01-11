@@ -36,6 +36,8 @@
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CreepTasks\" />
+    <Folder Include="src\ScreepsPlus\" />
     <Folder Include="TypeScript\" />
     <Folder Include="src\" />
     <Folder Include="src\Prototypes\Creep\" />
@@ -48,8 +50,9 @@
     <Folder Include="src\Tasks\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\app.js" />
-    <Compile Include="src\config.js">
+    <Compile Include="CreepTasks\PrimeHarvester.js" />
+    <Compile Include="app.js" />
+    <Compile Include="config.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gruntfile.js" />
@@ -80,6 +83,9 @@
     <Compile Include="src\Objects\Delegate.js" />
     <Compile Include="src\Prototypes\Structure.js" />
     <Compile Include="src\Objects\HiveMind.js" />
+    <Compile Include="src\ScreepsPlus\callback.js" />
+    <Compile Include="src\ScreepsPlus\resources.js" />
+    <Compile Include="src\ScreepsPlus\screepsplus.js" />
     <Compile Include="src\Tasks\Magistrate.js">
       <SubType>Code</SubType>
     </Compile>

@@ -7,7 +7,7 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
     }
 
     PostNewTask(task) {
-        const id = task.taskArgs[TaskArgs_Enum.TaskId];
+        const id = task.GetArgument(TaskArgs_Enum.TaskId);
         StartFunction(this.name + '.PostNewTask: ' + id);
 
         if (this.TaskMemory[id]) {
