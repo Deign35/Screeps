@@ -63,6 +63,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\Managers\CreepManager.js" />
+    <Compile Include="src\Objects\PathFinding.js" />
     <Compile Include="src\Prototypes\Creep.js">
       <SubType>Code</SubType>
     </Compile>
@@ -86,6 +87,7 @@
     <Compile Include="src\ScreepsPlus\callback.js" />
     <Compile Include="src\ScreepsPlus\resources.js" />
     <Compile Include="src\ScreepsPlus\screepsplus.js" />
+    <Compile Include="src\Tasks\ActionTemplates.js" />
     <Compile Include="src\Tasks\Magistrate.js">
       <SubType>Code</SubType>
     </Compile>

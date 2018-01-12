@@ -38,9 +38,9 @@ Room.prototype.InitMemory = function () {
     this.Brain.PrevConstructionSites = [];
     this.HiveMind = new HiveMind(this.name, {});
 
-    this.HiveMind.PostNewTask(HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Upgrader, new Array('Upgrader_' + this.name, this.name)));
+    this.HiveMind.PostNewTask(TaskProfiles.CreateTaskFromEnum(TaskProfile_Enum.Upgrader, new Array('Upgrader_' + this.name, this.name)));
     for (let i = 0; i < 5; i++) {
-        this.HiveMind.PostNewTask(HiveMind.CreateTaskFromProfile(TaskProfile_Enum.Default, new Array(this.name + '_GP_' + i, this.name, 'TransferTargetCallback')));
+        this.HiveMind.PostNewTask(TaskProfiles.CreateTaskFromEnum(TaskProfile_Enum.Default, new Array(this.name + '_GP_' + i, this.name, 'TransferTargetCallback')));
     }
 
     this.Brain.TaskMemory = this.HiveMind.TaskMemory;

@@ -11,7 +11,7 @@ Delegate.prototype.Callback = function (callbackArgs) {
     let callbackFunction;
     let delegateResult = OK;
 
-    if (this.CallbackType == CallbackType_Enum.GameObject) {
+    if (this.CallbackType == CallbackType_Enum.Id) {
         const obj = Game.getObjectById(this.CallbackId);
         delegateResult = obj[this.Callbackfunc].apply(obj, callbackArgs);
     } else if (this.CallbackType == CallbackType_Enum.Room) {

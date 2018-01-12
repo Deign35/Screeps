@@ -47,13 +47,22 @@ Task.prototype.Evaluate = function () {
 
     let executionResult = creep.ExecuteTask(this);
     let command = this.GetArgument(TaskArgs_Enum.ActionList)[this.Cache[TaskMemory_Enum.ActionIndex]];
-    const expectedResponses = command[ActionArgs_Enum.Responses];
-    if (!expectedResponses[executionResult[TaskExecutionResult_Enum.ActionResult]]) {
-        console.log('DO NOT KNOW HOW TO PROCESS THIS');
-        throw Error('Task to do ' + command[ActionArgs_Enum.Action] + ' couldnt handle response ' + executionResult[TaskExecutionResult_Enum.ActionResult]);
+    let response = CreepCommandResponse.Retry;
+
+    const customResponses = command[ActionArgs_Enum.Responses];
+    if (customResponses && customResponses[executionResult[TaskExecutionResult_Enum.ActionResult]]) {
+        response = customResponses[executionResult[TaskExecutionResult_Enum.ActionResult]];
+    } else {
+        const defaultResponses = ActionTemplates[executionResult[TaskExecutionResult_Enum.ActionCommand]][ActionArgs_Enum.Responses];
+
+        if (!defaultResponses[executionResult[TaskExecutionResult_Enum.ActionResult]]) {
+            console.log('DO NOT KNOW HOW TO PROCESS THIS');
+            throw Error('Task to do ' + command[ActionArgs_Enum.Action] + ' couldnt handle response ' + executionResult[TaskExecutionResult_Enum.ActionResult]);
+        }
+
+        response = defaultResponses[executionResult[TaskExecutionResult_Enum.ActionResult]];
     }
 
-    let response = expectedResponses[executionResult[TaskExecutionResult_Enum.ActionResult]];
     if (response == CreepCommandResponse_Enum.Move) {
         // (TODO): Need to find a good way to cache this.
         let pathResult = creep.pos.findPathTo(executionResult[TaskExecutionResult_Enum.Target].pos, {
@@ -86,7 +95,7 @@ Task.prototype.Evaluate = function () {
         taskResult = TaskResults_Enum.Incomplete;
     }
 
-    if (response == CreepCommandResponse_Enum.Retry) {
+    if (response == CreepCommandResponse_Enum.Retry) { // Uncertain if Retry works or not.  Needs confirmation.
         console.log(this.Cache[TaskMemory_Enum.RetryCount]);
         if (this.Cache[TaskMemory_Enum.RetryCount] < 5) {
             this.Cache[TaskMemory_Enum.RetryCount] += 1;

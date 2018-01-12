@@ -13,10 +13,10 @@ const DefaultProfile = function ([taskId, roomName, transferCallback]) {
     let harvestProfileArgs = [];
     harvestProfileArgs.push(CreepTargetType_Enum.Find);
     harvestProfileArgs.push(FIND_SOURCES);
-    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Harvest, new Array(CreepTargetType_Enum.Find, FIND_SOURCES)));
-    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Transfer, new Array(roomName, transferCallback)));
-    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Build, new Array(roomName)));
-    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Upgrade, 0));
+    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Harvest, new Array(CreepTargetType_Enum.Find, FIND_SOURCES)));
+    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Transfer, new Array(roomName, transferCallback)));
+    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Build, new Array(roomName)));
+    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Upgrade, 0));
 
     defaultTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
 
@@ -81,8 +81,8 @@ const UpgraderProfile = function ([taskId, roomName]) {
     let harvestProfileArgs = [];
     harvestProfileArgs.push(CreepTargetType_Enum.Find);
     harvestProfileArgs.push(FIND_SOURCES);
-    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Harvest, harvestProfileArgs));
-    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Upgrade, 0));
+    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Harvest, harvestProfileArgs));
+    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Upgrade, 0));
 
     upgraderTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
 
@@ -110,7 +110,7 @@ const SweeperProfile = function (anchorPos) {
 }
 TaskProfiles[TaskProfile_Enum.Sweeper] = SweeperProfile;
 
-const RequestTaskProfile = function (profile, args) {
+TaskProfiles['CreateTaskFromEnum'] = function (profile, args) {
     for (const profileType in TaskProfiles) {
         if (profile == profileType) {
             return TaskProfiles[profile](args);
@@ -119,4 +119,4 @@ const RequestTaskProfile = function (profile, args) {
 
     return ERR_INVALID_ARGS;
 }
-module.exports = RequestTaskProfile; // Eventually this should be able to store and load custom profiles.
+module.exports = TaskProfiles;

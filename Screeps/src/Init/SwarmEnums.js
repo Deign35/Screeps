@@ -41,8 +41,7 @@ const Enums = {
     },
 
     CreepTargetType_Enum: {
-        FixedTarget: 'FT1',
-        TargetList: 'TL',
+        FixedTarget: 'FT',
         Callback: 'CB',
         NearestStructure: 'NS',
         Find: 'FD',
@@ -65,13 +64,8 @@ const Enums = {
     },
 
     CallbackType_Enum: {
-        GameObject: 'GO',
+        Id: 'ID',
         Room: 'RM',
-    },
-
-    CreepBodyType_Enum: {
-        AllPurpose: 'AP',
-        Worker: 'WR',
     },
 
     TaskArgs_Enum: {
@@ -107,8 +101,9 @@ const Enums = {
         Upgrader: 'UP',
     },
 
-    TaskExecutionResult_Enum: {
+    TaskExecutionResult_Enum: { // Currently this doesn't get saved to memory, so full names is more helpful.
         ActionResult: 'actionResult',
+        ActionCommand: 'actionCommand',
         Target: 'target',
     },
 

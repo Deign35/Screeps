@@ -10,6 +10,8 @@ if (Consts.DEBUG_MODE) {
 
 require('Init_GlobalFunctions');
 global['Overmind'] = require('Init_Overmind');
+global['ActionTemplates'] = require('Tasks_ActionTemplates');
+global['TaskProfiles'] = require('Tasks_TaskProfiles');
 
 for (let ManagerNameId in Managers_Enum) {
     global[Managers_Enum[ManagerNameId]] = require('Managers_' + Managers_Enum[ManagerNameId]);

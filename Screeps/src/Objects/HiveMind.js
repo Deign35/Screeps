@@ -82,7 +82,5 @@ class HiveMind { // Controls the different jobs needed around a given Hive(room)
         return OK;
     }
 }
-HiveMind.CreateTaskFromProfile = require('Tasks_TaskProfiles');
-HiveMind.CreateActionFromProfile = require('Tasks_ActionTemplates');
 
 module.exports = HiveMind;
