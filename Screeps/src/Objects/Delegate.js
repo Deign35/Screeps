@@ -23,22 +23,6 @@ Delegate.prototype.Callback = function (callbackArgs) {
     return delegateResult;
 };
 
-/*
-Delegate.prototype.Callback = function (callbackArgs) {
-    StartFunction('Delegate.Callback');
-    let callbackFunction;
-    let callbackObj = {};
-
-    if (this.CallbackType == CallbackType_Enum.GameObject) {
-        callbackObj = Game.getObjectById(this.CallbackId);
-    } else if (this.CallbackType == CallbackType_Enum.Room) {
-        callbackObj = Game.rooms[this.CallbackId];
-    }
-
-    EndFunction();
-    return callbackObj[this.CallbackFunc].apply(callbackObj, callbackArgs);
-};*/
-
 Delegate.FromData = function (data) {
     return new Delegate(data.CallbackType, data.CallbackId, data.Callbackfunc);
 }

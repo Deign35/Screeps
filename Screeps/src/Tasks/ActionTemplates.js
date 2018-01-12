@@ -3,18 +3,19 @@
 ActionTemplates[CreepCommand_Enum.Harvest] = function ([targetType, targetArg]) {
     let harvestAction = {};
     harvestAction[ActionArgs_Enum.Action] = CreepCommand_Enum.Harvest;
-    harvestAction[ActionArgs_Enum.TargetType] = CreepTargetType_Enum.FixedTarget;
-    harvestAction[ActionArgs_Enum.TargetArg] = fixedTargetIndex;
+    harvestAction[ActionArgs_Enum.TargetType] = targetType;
+    harvestAction[ActionArgs_Enum.TargetArg] = targetArg;
 
     let harvestArgs = [];
     harvestArgs.push(ActionArgs_Enum.TargetType);
     harvestAction[ActionArgs_Enum.ArgsList] = harvestArgs;
 
     let harvestResponses = {};
-    harvestResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
-    harvestResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Continue;
     harvestResponses[OK] = CreepCommandResponse_Enum.Continue;
+    harvestResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
+    harvestResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.ReqTarget;
     harvestResponses[ERR_FULL] = CreepCommandResponse_Enum.Next;
+    harvestResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.ReqTarget;
     harvestAction[ActionArgs_Enum.Responses] = harvestResponses;
 
     return harvestAction;
@@ -61,11 +62,11 @@ ActionTemplates[CreepCommand_Enum.Transfer] = function ([roomName, callbackId]) 
     return transferAction;
 }
 
-ActionTemplates[CreepCommand_Enum.Build] = function ([roomName, callbackId]) {
+ActionTemplates[CreepCommand_Enum.Build] = function (roomName) {
     let buildAction = {};
     buildAction[ActionArgs_Enum.Action] = CreepCommand_Enum.Build;
-    buildAction[ActionArgs_Enum.TargetType] = CreepTargetType_Enum.Callback;
-    buildAction[ActionArgs_Enum.TargetArg] = new Delegate(CallbackType_Enum.Room, roomName, callbackId);
+    buildAction[ActionArgs_Enum.TargetType] = CreepTargetType_Enum.Find;
+    buildAction[ActionArgs_Enum.TargetArg] = FIND_MY_CONSTRUCTION_SITES;
     buildAction[ActionArgs_Enum.ResourceType] = RESOURCE_ENERGY;
     let buildArgs = [];
     buildArgs.push(ActionArgs_Enum.TargetType);

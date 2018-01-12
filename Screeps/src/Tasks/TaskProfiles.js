@@ -1,27 +1,26 @@
 ﻿const TaskProfiles = {};
 
-const DefaultProfile = function (taskId) {
-    const newTask = new Task();
-    newTask.SetArgument(TaskArgs_Enum.TaskId, taskId);
-    newTask.SetArgument(TaskArgs_Enum.Body, [MOVE, MOVE, CARRY, CARRY, WORK]);
+const DefaultProfile = function ([taskId, roomName, transferCallback]) {
+    let defaultTask = new Task();
+    defaultTask.SetArgument(TaskArgs_Enum.TaskId, taskId);
+    defaultTask.SetArgument(TaskArgs_Enum.Body, [MOVE, CARRY, WORK]);
+
+    let fixedTargets = [];
+    fixedTargets.push(Game.rooms[roomName].controller.id);
+    defaultTask.SetArgument(TaskArgs_Enum.FixedTargets, fixedTargets);
 
     const ActionList = [];
-    const RetrieveCommand = {
-        Commands: [{ Action: CreepCommand_Enum.Withdraw },
-        { Action: CreepCommand_Enum.ReqTransfer },
-        { Action: CreepCommand_Enum.Harvest }]
-    }
-    ActionList.push(RetrieveCommand);
+    let harvestProfileArgs = [];
+    harvestProfileArgs.push(CreepTargetType_Enum.Find);
+    harvestProfileArgs.push(FIND_SOURCES);
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Harvest, new Array(CreepTargetType_Enum.Find, FIND_SOURCES)));
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Transfer, new Array(roomName, transferCallback)));
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Build, new Array(roomName)));
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Upgrade, 0));
 
-    const DeliverCommand = {
-        Commands: [{ Action: CreepCommand_Enum.Transfer },
-        { Action: CreepCommand_Enum.Build },
-        { Action: CreepCommand_Enum.Upgrade }]
-    }
-    ActionList.push(DeliverCommand);
-    newTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
+    defaultTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
 
-    return newTask;
+    return defaultTask;
 }
 TaskProfiles[TaskProfile_Enum.Default] = DefaultProfile;
 
@@ -68,24 +67,26 @@ const TransporterProfile = function (routeId, size, resourceType) {
 }
 TaskProfiles[TaskProfile_Enum.Transporter] = TransporterProfile;
 
-const UpgraderProfile = function () {
-    const newTask = new Task();
+const UpgraderProfile = function ([taskId, roomName]) {
+    let upgraderTask = new Task();
+    upgraderTask.SetArgument(TaskArgs_Enum.TaskId, taskId);
+    upgraderTask.SetArgument(TaskArgs_Enum.Body, [MOVE, CARRY, WORK]);
 
-    newTask.SetArgument(TaskArgs_Enum.TaskId, 'Upgrader');
+    let fixedTargets = [];
+    fixedTargets.push(Game.rooms[roomName].controller.id);
+    upgraderTask.SetArgument(TaskArgs_Enum.FixedTargets, fixedTargets);
 
     const ActionList = [];
-    const RetrieveCommand = {
-        Commands: [{ Action: CreepCommand_Enum.Withdraw },
-        { Action: CreepCommand_Enum.ReqTransfer },
-        { Action: CreepCommand_Enum.Harvest }]
-    }
-    ActionList.push(RetrieveCommand);
+    // Harvest needs to just pick nearest -- CreepTargetType_Enum.Nearest
+    let harvestProfileArgs = [];
+    harvestProfileArgs.push(CreepTargetType_Enum.Find);
+    harvestProfileArgs.push(FIND_SOURCES);
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Harvest, harvestProfileArgs));
+    ActionList.push(HiveMind.CreateActionFromProfile(CreepCommand_Enum.Upgrade, 0));
 
-    const UpgradeCommand = { Commands: [{ Action: CreepCommand_Enum.Upgrade }] };
-    ActionList.push(UpgradeCommand);
-    newTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
+    upgraderTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
 
-    return newTask;
+    return upgraderTask;
 }
 TaskProfiles[TaskProfile_Enum.Upgrader] = UpgraderProfile;
 

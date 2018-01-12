@@ -45,17 +45,15 @@ Task.prototype.Evaluate = function () {
     StartFunction('Task.Evaluate');
     let taskResult = TaskResults_Enum.Incomplete;
 
-    creep.Brain = Overmind.LoadData(creep.name);
     let executionResult = creep.ExecuteTask(this);
     let command = this.GetArgument(TaskArgs_Enum.ActionList)[this.Cache[TaskMemory_Enum.ActionIndex]];
     const expectedResponses = command[ActionArgs_Enum.Responses];
     if (!expectedResponses[executionResult[TaskExecutionResult_Enum.ActionResult]]) {
         console.log('DO NOT KNOW HOW TO PROCESS THIS');
-        throw Error('Task to do ' + command[ActionArgs_Enum.Action] + ' couldnt handle response ' + actionResult);
+        throw Error('Task to do ' + command[ActionArgs_Enum.Action] + ' couldnt handle response ' + executionResult[TaskExecutionResult_Enum.ActionResult]);
     }
 
     let response = expectedResponses[executionResult[TaskExecutionResult_Enum.ActionResult]];
-    console.log('actionResult: ' + executionResult[TaskExecutionResult_Enum.ActionResult] + ' && response: ' + response);
     if (response == CreepCommandResponse_Enum.Move) {
         // (TODO): Need to find a good way to cache this.
         let pathResult = creep.pos.findPathTo(executionResult[TaskExecutionResult_Enum.Target].pos, {

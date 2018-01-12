@@ -13,7 +13,6 @@
             let target = {};
             if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.FixedTarget) {
                 target = Game.getObjectById(task.GetArgument(TaskArgs_Enum.FixedTargets)[command[ActionArgs_Enum.TargetArg]]);
-                args.push(target);
             } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.TargetList) {
                 console.log('NOT IMPLEMENTED');
             } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.Callback) {
@@ -23,12 +22,16 @@
                 callbackArgs.push(command);
                 callbackDelegate.Callback(callbackArgs);
                 target = Game.getObjectById(task.Cache[TaskMemory_Enum.TargetId]);
-                args.push(target);
             } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.Find) {
-                // this.room.find(targetArg);
+                // If path is blocked, they can't get to the source.
+                // Using findClosestByPath is slower, but works better.
+                target = this.pos.findClosestByRange(command[ActionArgs_Enum.TargetArg]);
+                //Memory.DataDump.push()
             } else if (command[ActionArgs_Enum.TargetType] == CreepTargetType_Enum.NearestStructure) {
                 // find the structure closets based on targetArg
+                console.log('NOT IMPLEMENTED');
             }
+            args.push(target);
 
             if (!target) {
                 ExecutionResult[TaskExecutionResult_Enum.ActionResult] = ERR_INVALID_TARGET;
