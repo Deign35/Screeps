@@ -1,5 +1,5 @@
 ﻿const ActionTemplates = {};
-ActionTemplates[Responses] = {};
+ActionTemplates[ActionArgs_Enum.Responses] = {};
 
 ActionTemplates[CreepCommand_Enum.Harvest] = function ([targetType, targetArg]) {
     let harvestAction = {};
@@ -10,13 +10,14 @@ ActionTemplates[CreepCommand_Enum.Harvest] = function ([targetType, targetArg]) 
 
     return harvestAction;
 };
+const harvestResponses = {};
 
-ActionTemplates[Responses][CreepCommand_Enum.Harvest] = {};
-ActionTemplates[Responses][CreepCommand_Enum.Harvest][OK] = CreepCommandResponse_Enum.Continue;
-ActionTemplates[Responses][CreepCommand_Enum.Harvest][ERR_FULL] = CreepCommandResponse_Enum.Next;
-ActionTemplates[Responses][CreepCommand_Enum.Harvest][ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
-ActionTemplates[Responses][CreepCommand_Enum.Harvest][ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.ReqTarget;
-ActionTemplates[Responses][CreepCommand_Enum.Harvest][ERR_INVALID_TARGET] = CreepCommandResponse_Enum.ReqTarget;
+harvestResponses[OK] = CreepCommandResponse_Enum.Continue;
+harvestResponses[ERR_FULL] = CreepCommandResponse_Enum.Next;
+harvestResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
+harvestResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.ReqTarget;
+harvestResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.ReqTarget;
+ActionTemplates[ActionArgs_Enum.Responses][CreepCommand_Enum.Harvest] = harvestResponses;
 
 ActionTemplates[CreepCommand_Enum.Upgrade] = function (fixedTargetIndex) {
     let upgradeAction = {};
@@ -28,11 +29,12 @@ ActionTemplates[CreepCommand_Enum.Upgrade] = function (fixedTargetIndex) {
     return upgradeAction;
 }
 
-ActionTemplates[Responses][CreepCommand_Enum.Upgrade] = {};
-ActionTemplates[Responses][CreepCommand_Enum.Upgrade][OK] = CreepCommandResponse_Enum.Continue;
-ActionTemplates[Responses][CreepCommand_Enum.Upgrade][ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
-ActionTemplates[Responses][CreepCommand_Enum.Upgrade][ERR_INVALID_TARGET] = CreepCommandResponse_Enum.ReqTarget;
-ActionTemplates[Responses][CreepCommand_Enum.Upgrade][ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Reset;
+const upgradeResponses = {};
+upgradeResponses[OK] = CreepCommandResponse_Enum.Continue;
+upgradeResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
+upgradeResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.ReqTarget;
+upgradeResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Reset;
+ActionTemplates[ActionArgs_Enum.Responses][CreepCommand_Enum.Upgrade] = upgradeResponses;
 
 ActionTemplates[CreepCommand_Enum.Transfer] = function ([roomName, callbackId]) {
     let transferAction = {};
@@ -45,13 +47,13 @@ ActionTemplates[CreepCommand_Enum.Transfer] = function ([roomName, callbackId]) 
     return transferAction;
 }
 
-ActionTemplates[Responses][CreepCommand_Enum.Transfer] = {};
-ActionTemplates[Responses][CreepCommand_Enum.Transfer][OK] = CreepCommandResponse_Enum.Continue;
-ActionTemplates[Responses][CreepCommand_Enum.Transfer][ERR_FULL] = CreepCommandResponse_Enum.ReqTarget;
-ActionTemplates[Responses][CreepCommand_Enum.Transfer][ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
-ActionTemplates[Responses][CreepCommand_Enum.Transfer][ERR_INVALID_TARGET] = CreepCommandResponse_Enum.Next;
-ActionTemplates[Responses][CreepCommand_Enum.Transfer][ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Reset;
-
+const transferResponses = {};
+transferResponses[OK] = CreepCommandResponse_Enum.Continue;
+transferResponses[ERR_FULL] = CreepCommandResponse_Enum.ReqTarget;
+transferResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
+transferResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.Next;
+transferResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Reset;
+ActionTemplates[ActionArgs_Enum.Responses][CreepCommand_Enum.Transfer] = transferResponses;
 
 ActionTemplates[CreepCommand_Enum.Build] = function (roomName) {
     let buildAction = {};
@@ -63,12 +65,13 @@ ActionTemplates[CreepCommand_Enum.Build] = function (roomName) {
     return buildAction;
 }
 
-ActionTemplates[Responses][CreepCommand_Enum.Build] = {};
-ActionTemplates[Responses][CreepCommand_Enum.Build][OK] = CreepCommandResponse_Enum.Continue;
-ActionTemplates[Responses][CreepCommand_Enum.Build][ERR_FULL] = CreepCommandResponse_Enum.ReqTarget;
-ActionTemplates[Responses][CreepCommand_Enum.Build][ERR_INVALID_TARGET] = CreepCommandResponse_Enum.Next;
-ActionTemplates[Responses][CreepCommand_Enum.Build][ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Reset;
-ActionTemplates[Responses][CreepCommand_Enum.Build][ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
+const buildResponses = {};
+buildResponses[OK] = CreepCommandResponse_Enum.Continue;
+buildResponses[ERR_FULL] = CreepCommandResponse_Enum.ReqTarget;
+buildResponses[ERR_INVALID_TARGET] = CreepCommandResponse_Enum.Next;
+buildResponses[ERR_NOT_ENOUGH_RESOURCES] = CreepCommandResponse_Enum.Reset;
+buildResponses[ERR_NOT_IN_RANGE] = CreepCommandResponse_Enum.Move;
+ActionTemplates[ActionArgs_Enum.Responses][CreepCommand_Enum.Build] = buildResponses;
 
 ActionTemplates['CreateActionFromEnum'] = function (creepCommand, args) {
     for (const templateCommand in ActionTemplates) {

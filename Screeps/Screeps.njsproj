@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CreepTasks\" />
+    <Folder Include="src\Console\" />
     <Folder Include="src\ScreepsPlus\" />
     <Folder Include="TypeScript\" />
     <Folder Include="src\" />
@@ -56,6 +57,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gruntfile.js" />
+    <Compile Include="src\Console\ConsoleCommands.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Console\CreateTask.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\Init\GlobalFunctions.js">
       <SubType>Code</SubType>
     </Compile>

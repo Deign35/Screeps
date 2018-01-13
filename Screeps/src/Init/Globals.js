@@ -12,6 +12,7 @@ require('Init_GlobalFunctions');
 global['Overmind'] = require('Init_Overmind');
 global['ActionTemplates'] = require('Tasks_ActionTemplates');
 global['TaskProfiles'] = require('Tasks_TaskProfiles');
+global['ConsoleCommands'] = require('Console_ConsoleCommands');
 
 for (let ManagerNameId in Managers_Enum) {
     global[Managers_Enum[ManagerNameId]] = require('Managers_' + Managers_Enum[ManagerNameId]);

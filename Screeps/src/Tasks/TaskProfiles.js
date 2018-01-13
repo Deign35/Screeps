@@ -119,4 +119,18 @@ TaskProfiles['CreateTaskFromEnum'] = function (profile, args) {
 
     return ERR_INVALID_ARGS;
 }
+
+TaskProfiles['CreateTaskFromConsole'] = function (profile, room) {
+    switch (profile) {
+        case TaskProfile_Enum.Default: {
+            this.CreateTaskFromEnum(profile, roomName);
+        }
+            break;
+        case TaskProfile_Enum.Upgrader: {
+
+        }
+            break;
+    }
+};
+
 module.exports = TaskProfiles;
