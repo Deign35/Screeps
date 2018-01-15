@@ -47,3 +47,5 @@ CreepCommandResponseDefaults[ERR_GCL_NOT_ENOUGH] = CreepCommandResponse_Enum.Can
 Consts['CreepCommandResponseDefaults'] = CreepCommandResponseDefaults;
 
 global['Consts'] = Consts;
+
+global['ERR_NO_TARGETS'] = -16;

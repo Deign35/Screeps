@@ -7,7 +7,6 @@ Task.prototype.InitCache = function() {
     this.Cache = {};
     this.Cache[TaskMemory_Enum.TargetList] = [];
     this.Cache[TaskMemory_Enum.ActionIndex] = 0;
-    this.Cache[TaskMemory_Enum.CommandIndex] = 0;
     this.Cache[TaskMemory_Enum.RetryCount] = 0;
 }
 
@@ -47,13 +46,13 @@ Task.prototype.Evaluate = function () {
 
     let executionResult = creep.ExecuteTask(this);
     let command = this.GetArgument(TaskArgs_Enum.ActionList)[this.Cache[TaskMemory_Enum.ActionIndex]];
-    let response = CreepCommandResponse.Retry;
+    let response = CreepCommandResponse_Enum.Retry;
 
     const customResponses = command[ActionArgs_Enum.Responses];
     if (customResponses && customResponses[executionResult[TaskExecutionResult_Enum.ActionResult]]) {
         response = customResponses[executionResult[TaskExecutionResult_Enum.ActionResult]];
     } else {
-        const defaultResponses = ActionTemplates[executionResult[TaskExecutionResult_Enum.ActionCommand]][ActionArgs_Enum.Responses];
+        const defaultResponses = ActionTemplates[ActionArgs_Enum.Responses][executionResult[TaskExecutionResult_Enum.ActionCommand]];
 
         if (!defaultResponses[executionResult[TaskExecutionResult_Enum.ActionResult]]) {
             console.log('DO NOT KNOW HOW TO PROCESS THIS');

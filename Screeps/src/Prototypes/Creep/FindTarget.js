@@ -71,7 +71,7 @@ FindTargetFunctions[CreepCommand_Enum.Withdraw] = function (creep) {
     return ERR_NOT_FOUND;
 };
 
-Creep.prototype.FindTarget = function (command) {
+Creep.prototype.FindTarget2 = function (command) {
     StartFunction('Creep.FindTarget(' + command.Command + ')');
     let findResult = ERR_NOT_FOUND;
     if (FindTargetFunctions[command.Command]) {

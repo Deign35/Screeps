@@ -45,6 +45,7 @@ const Enums = {
         Callback: 'CB',
         NearestStructure: 'NS',
         Find: 'FD',
+        AtPosition: 'AP',
     },
 
     TaskResults_Enum: {
@@ -85,7 +86,6 @@ const Enums = {
 
     TaskMemory_Enum: {
         ActionIndex: 'AI',
-        CommandIndex: 'CI',
         RetryCount: 'RC',
         Slave: 'SV',
         TargetId: 'TI',

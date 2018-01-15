@@ -10,9 +10,6 @@ const DefaultProfile = function ([taskId, roomName, transferCallback]) {
     defaultTask.SetArgument(TaskArgs_Enum.FixedTargets, fixedTargets);
 
     const ActionList = [];
-    let harvestProfileArgs = [];
-    harvestProfileArgs.push(CreepTargetType_Enum.Find);
-    harvestProfileArgs.push(FIND_SOURCES);
     ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Harvest, new Array(CreepTargetType_Enum.Find, FIND_SOURCES)));
     ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Transfer, new Array(roomName, transferCallback)));
     ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Build, new Array(roomName)));
@@ -81,7 +78,7 @@ const UpgraderProfile = function ([taskId, roomName]) {
     let harvestProfileArgs = [];
     harvestProfileArgs.push(CreepTargetType_Enum.Find);
     harvestProfileArgs.push(FIND_SOURCES);
-    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Harvest, harvestProfileArgs));
+    ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Harvest, new Array(CreepTargetType_Enum.Find, FIND_SOURCES)));
     ActionList.push(ActionTemplates.CreateActionFromEnum(CreepCommand_Enum.Upgrade, 0));
 
     upgraderTask.SetArgument(TaskArgs_Enum.ActionList, ActionList);
@@ -120,17 +117,19 @@ TaskProfiles['CreateTaskFromEnum'] = function (profile, args) {
     return ERR_INVALID_ARGS;
 }
 
-TaskProfiles['CreateTaskFromConsole'] = function (profile, room) {
-    switch (profile) {
+TaskProfiles['CreateTaskFromConsole'] = function (profile, taskName, roomName) {
+    /*switch (profile) {
         case TaskProfile_Enum.Default: {
-            this.CreateTaskFromEnum(profile, roomName);
         }
             break;
         case TaskProfile_Enum.Upgrader: {
-
+            this.CreateTaskFromEnum(profile, Array.create(taskName, roomName));
         }
             break;
-    }
+    }*/
+
+
+    return this.CreateTaskFromEnum(profile, new Array(taskName, roomName));
 };
 
 module.exports = TaskProfiles;

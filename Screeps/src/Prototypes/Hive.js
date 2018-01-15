@@ -17,7 +17,6 @@
                         // Idea: add a storeCapacity array instead of the one number
                         return structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
                     }
-                    console.log('structureType failed...');
                     return false;
                 }
             });
@@ -103,6 +102,10 @@ Room.prototype.Complete = function () {
     this.Brain.TaskMemory = this.HiveMind.TaskMemory;
     EndFunction();
     return OK;
+};
+
+Room.prototype.AddTask = function (task) {
+    this.HiveMind.PostNewTask(task);
 };
 
 Room.prototype.SpawnCallback = function (task) {
