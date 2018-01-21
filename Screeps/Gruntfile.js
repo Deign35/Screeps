@@ -1,6 +1,6 @@
 ﻿module.exports = function (grunt) {
 
-    var config = require('./.screeps.json')
+    var config = require('./.screeps.json');
     var branch = config.branch;
     var email = grunt.option('email') || config.email;
     var password = grunt.option('password') || config.password;
@@ -8,11 +8,11 @@
 
     // parameters
 
-    grunt.loadNpmTasks('grunt-screeps')
-    grunt.loadNpmTasks('grunt-contrib-clean')
-    grunt.loadNpmTasks('grunt-contrib-copy')
-    grunt.loadNpmTasks('grunt-file-append')
-    grunt.loadNpmTasks("grunt-ts")
+    grunt.loadNpmTasks('grunt-screeps');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-file-append');
+    grunt.loadNpmTasks("grunt-ts");
 
     var currentdate = new Date();
 
@@ -34,24 +34,22 @@
         },
         ts: {
             options: {
-                comments: false,
-                sourceRoot: '',
-                mapRoot: './map',
-                declaration: true,
+                noEmitOnError: true,
+                noImplicitAny: true,
+                noImplicitUseStrict: true,
+                noImplicitReturns: true,
+                noImplicitThis: true,
+                rootDir: 'src',
             },
             default: {
+                outDir: 'obj',
                 src: ["src/**/*.ts"],
-            }
+            },
         },
 
         // Remove all files from the dist folder.
         clean: {
-            dist: {
-                'dist': ['dist']
-            },
-            obj: {
-                'obj': ['obj']
-            }
+            default: ['dist', 'obj'],
         },
 
         // Copy all source files into the dist folder, flattening the folder structure by converting path delimiters to underscores
@@ -78,7 +76,7 @@
             versioning: {
                 files: [
                     {
-                        append: "\nglobal.SCRIPT_VERSION = " + currentdate.getTime() + "\n",
+                        append: "global.SCRIPT_VERSION = " + currentdate.getTime() + "\n",
                         input: 'dist/version.js',
                     }
                 ]
@@ -86,8 +84,7 @@
         },
     })
 
-    grunt.registerTask('default', ['clean:dist', 'copy:screeps']);
-    grunt.registerTask('commit', ['clean:dist', 'copy:screeps', 'copy:version', 'file_append:versioning', 'screeps']);
-    grunt.registerTask('compile', ['clean:obj', 'ts']);
-    grunt.registerTask('clean2', ['clean:obj']);
+    grunt.registerTask('default', ['clean', 'ts', 'copy:screeps']);
+    grunt.registerTask('commit', ['clean', 'ts', 'copy:screeps', 'copy:version', 'file_append:versioning', 'screeps']);
+    grunt.registerTask('compile', ['clean', 'ts']);
 }
