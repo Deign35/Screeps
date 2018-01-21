@@ -1,3 +1,5 @@
 Screeps/node_modules/
 Screeps/.screeps.json
 Screeps/dist/
+Screeps/obj/
+Screeps/.tscache/

@@ -12,6 +12,7 @@
     grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-contrib-copy')
     grunt.loadNpmTasks('grunt-file-append')
+    grunt.loadNpmTasks("grunt-ts")
 
     var currentdate = new Date();
 
@@ -29,12 +30,28 @@
             },
             dist: {
                 src: ['dist/*.js']
+            },
+        },
+        ts: {
+            options: {
+                comments: false,
+                sourceRoot: '',
+                mapRoot: './map',
+                declaration: true,
+            },
+            default: {
+                src: ["src/**/*.ts"],
             }
         },
 
         // Remove all files from the dist folder.
         clean: {
-            'dist': ['dist']
+            dist: {
+                'dist': ['dist']
+            },
+            obj: {
+                'obj': ['obj']
+            }
         },
 
         // Copy all source files into the dist folder, flattening the folder structure by converting path delimiters to underscores
@@ -69,8 +86,8 @@
         },
     })
 
-    grunt.registerTask('default', ['clean', 'copy:screeps']);
-    grunt.registerTask('commit', ['clean', 'copy:screeps', 'copy:version', 'file_append:versioning', 'screeps']);
-
-
+    grunt.registerTask('default', ['clean:dist', 'copy:screeps']);
+    grunt.registerTask('commit', ['clean:dist', 'copy:screeps', 'copy:version', 'file_append:versioning', 'screeps']);
+    grunt.registerTask('compile', ['clean:obj', 'ts']);
+    grunt.registerTask('clean2', ['clean:obj']);
 }
