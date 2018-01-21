@@ -30,52 +30,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include=".screeps.json" />
+    <Content Include="tsconfig.json" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Content Include="screeps.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />
-    <Folder Include="src\Creeps\" />
-    <Folder Include="src\Hives\" />
-    <Folder Include="src\Init\" />
-    <Folder Include="src\Objects\" />
-    <Folder Include="src\Structures\" />
-    <Folder Include="src\Tasks\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gruntfile.js" />
-    <Compile Include="src\Creeps\CreepManager.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.BasicCommands.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.CustomCommands.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.FindTarget.js" />
-    <Compile Include="src\Creeps\Prototype.Creep.js" />
-    <Compile Include="src\Hives\HiveManager.js" />
-    <Compile Include="src\Hives\Prototype.Room.ActivateDefaults.js" />
-    <Compile Include="src\Hives\Prototype.Room.js" />
-    <Compile Include="src\Init\Debug.js" />
-    <Compile Include="src\Init\Globals.js" />
-    <Compile Include="src\main.js" />
-    <Compile Include="src\Init\MemoryManager.js" />
-    <Compile Include="src\Init\Prototypes.js" />
-    <Compile Include="src\Init\SwarmConsts.js" />
-    <Compile Include="src\Init\SwarmEnums.js" />
-    <Compile Include="src\Init\SwarmInitializer.js" />
-    <Compile Include="src\Objects\Delegate.js" />
-    <Compile Include="src\Objects\RoomFunctions.js" />
-    <Compile Include="src\ResourceManager.js" />
-    <Compile Include="src\Structures\Prototype.ConstructionSite.js" />
-    <Compile Include="src\Structures\Prototype.Structure.js" />
-    <Compile Include="src\Structures\Prototype.StructureController.js" />
-    <Compile Include="src\Structures\Prototype.StructureSpawn.js" />
-    <Compile Include="src\Structures\StructureManager.js" />
-    <Compile Include="src\Tasks\TaskMaster.js" />
-    <Compile Include="src\Tasks\TaskProfiles.js">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="src\main.ts" />
     <Compile Include="src\version.js" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\AutoComplete.d.ts" />
+    <TypeScriptCompile Include="src\types.d.ts" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

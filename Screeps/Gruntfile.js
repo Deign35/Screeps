@@ -1,7 +1,7 @@
 ﻿module.exports = function (grunt) {
 
     var config = require('./.screeps.json')
-    var branch = grunt.option('branch') || config.branch;
+    var branch = config.branch;
     var email = grunt.option('email') || config.email;
     var password = grunt.option('password') || config.password;
     var ptr = grunt.option('ptr') ? true : config.ptr;
@@ -43,7 +43,7 @@
             screeps: {
                 files: [{
                     expand: true,
-                    cwd: 'src/',
+                    cwd: 'obj/',
                     src: '**',
                     dest: 'dist/',
                     filter: 'isFile',
@@ -52,7 +52,10 @@
                         return dest + src.replace(/\//g, '_');
                     }
                 }],
-            }
+            },
+            version: {
+                files: [{ src: ['./src/version.js'], dest: './dist/version.js'}],
+            },
         },
         file_append: {
             versioning: {
@@ -67,16 +70,7 @@
     })
 
     grunt.registerTask('default', ['clean', 'copy:screeps']);
-    grunt.registerTask('commit', ['clean', 'copy:screeps', 'file_append:versioning', 'screeps']);
+    grunt.registerTask('commit', ['clean', 'copy:screeps', 'copy:version', 'file_append:versioning', 'screeps']);
 
 
 }
-
-/*
-npm install -g grunt-cli
-npm install grunt-screeps
-npm install grunt-contrib-clean --save-dev
-npm install grunt-contrib-copy --save-dev
-npm install grunt-file-append --save-dev
-npm install grunt-jsbeautifier --save-dev
-*/
