@@ -15,12 +15,12 @@
         "grunt-contrib-uglify": "~0.5.0",
         "grunt-file-append": "0.0.7",
         "grunt-jsbeautifier": "^0.2.13",
-        "grunt-ts-1.5": "^4.0.2",
         "typed-screeps": "^2.1.0"
     },
     "dependencies": {
         "@types/screeps": "^2.1.0",
         "grunt-screeps": "^1.4.0",
+        "grunt-ts": "^6.0.0-beta.17",
         "typescript": "^2.6.2"
     }
 }
