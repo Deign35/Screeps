@@ -1,16 +1,25 @@
+require('declared_common');
+
 export const loop = function () {
-    //my comment
-    console.log('Setup Complete');
+    let loopCache = new Cache('abc');
+    loopCache.Save();
+    loopCache.Load();
 };
 
-/*
-
-
-export function using<T extends IDisposable>(resource: T, func: (resource: T) => void) {
-    try {
-        func(resource);
-    } finally {
-        resource.dispose();
+export class Cache extends IMemory {
+    readonly memId: string;
+    constructor(id: string) {
+        super();
+        this.memId = id;
+        this.Load();
+    }
+    Load(): void {
+        console.log('Rock');
+    }
+    Save(): void {
+        console.log('Roll');
     }
 }
-*/
+
+let TestFunc = require('Actions_TestFile');
+global['TestFunc'] = TestFunc.TestFunc;

@@ -11,6 +11,7 @@
     grunt.loadNpmTasks('grunt-screeps');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-file-append');
     grunt.loadNpmTasks("grunt-ts");
 
@@ -33,23 +34,17 @@
             },
         },
         ts: {
-            options: {
-                noEmitOnError: true,
-                noImplicitAny: true,
-                noImplicitUseStrict: true,
-                noImplicitReturns: true,
-                noImplicitThis: true,
-                rootDir: 'src',
+            Base: {
+                tsconfig: './tscommon.json'
             },
             default: {
-                outDir: 'obj',
-                src: ["src/**/*.ts"],
-            },
+                tsconfig: true
+            }
         },
 
         // Remove all files from the dist folder.
         clean: {
-            default: ['dist', 'obj'],
+            default: ['dist', 'obj', 'decl', 'build', 'obj/declared', 'src/declarations'],
         },
 
         // Copy all source files into the dist folder, flattening the folder structure by converting path delimiters to underscores
@@ -82,9 +77,23 @@
                 ]
             }
         },
+        concat: {
+            options: {
+                separator: '\n/************************************************************************************************************/\n',
+            },
+            common: {
+                src:["./build/declared/common/IDisposable.js", "./build/declared/common/IMemory.js"],
+                dest:"./obj/declared/common.js"
+            }
+        }
     })
 
     grunt.registerTask('default', ['clean', 'ts', 'copy:screeps']);
     grunt.registerTask('commit', ['clean', 'ts', 'copy:screeps', 'copy:version', 'file_append:versioning', 'screeps']);
-    grunt.registerTask('compile', ['clean', 'ts']);
+    grunt.registerTask('decl', ['clean', 'ts:Base']);
+    grunt.registerTask('tryConcat', ['concat']);
+    grunt.registerTask('cleanAll', ['clean']);
+
+    grunt.registerTask('test', ['ts:default', 'copy:screeps', 'screeps']);
+    grunt.registerTask('TryFullCompile', ['clean', 'ts:Base', 'concat', 'ts:default', 'copy:screeps', 'copy:version', 'file_append:versioning', 'screeps']);
 }

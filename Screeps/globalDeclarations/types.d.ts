@@ -1,2 +1,5 @@
 // type shim for nodejs' `require()` syntax
 declare const require: (module: string) => any;
+declare var global: any;
+
+declare function TestFunc(): void;

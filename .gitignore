@@ -3,3 +3,5 @@ Screeps/.screeps.json
 Screeps/dist/
 Screeps/obj/
 Screeps/.tscache/
+Screeps/build/
+Screeps/decl/

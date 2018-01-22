@@ -23,6 +23,7 @@
         "grunt-jsbeautifier": "^0.2.13"
     },
     "dependencies": {
+        "grunt-contrib-concat": "^1.0.1",
         "grunt-screeps": "^1.4.0",
         "grunt-ts": "^6.0.0-beta.17",
         "typescript": "^2.6.2"

@@ -1,7 +1,7 @@
-﻿'use strict';
+﻿/*'use strict';
 
-import { AlreadyWrappedError } from './Error';
-import { Cache } from './common';
+import { AlreadyWrappedError } from 'Error';
+import { Cache } from 'common';
 //class MemoryObj extends any;
 
 class ProfilerMemory extends Cache {
@@ -26,7 +26,7 @@ class Profiler {
                 type: profileType,
                 filter,
             };
-        }*/
+        }
         this.profilerMemory = new ProfilerMemory(name);
     }
 }

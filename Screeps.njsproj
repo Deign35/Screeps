@@ -34,13 +34,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include=".screeps.json" />
+    <Content Include="tscommon.json" />
     <Content Include="tsconfig.json" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\declarationFiles\" />
+    <Folder Include="globalDeclarations\" />
     <Folder Include="src\" />
+    <Folder Include="src\Actions\" />
+    <Folder Include="src\common\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gruntfile.js" />
@@ -48,20 +51,19 @@
     <Compile Include="src\version.js" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\declarationFiles\screeps.d.ts" />
-    <TypeScriptCompile Include="src\common.ts">
+    <TypeScriptCompile Include="src\Actions\TestFile.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\common\IMemory.ts" />
+    <TypeScriptCompile Include="src\common\IDisposable.ts" />
+    <TypeScriptCompile Include="globalDeclarations\screeps.d.ts" />
     <TypeScriptCompile Include="src\Error.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="src\declarationFiles\interfaces.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\Profiler.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\declarationFiles\types.d.ts" />
+    <TypeScriptCompile Include="globalDeclarations\types.d.ts" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
