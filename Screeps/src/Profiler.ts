@@ -1,25 +1,49 @@
 ﻿'use strict';
 
-export class Profiler {
+import { AlreadyWrappedError } from './Error';
+import { Cache } from './common';
+//class MemoryObj extends any;
+
+class ProfilerMemory extends Cache {
+    constructor(id: string) {
+        super(id);
+    }
+}
+
+class Profiler {
+    readonly disableTick: number;
+    private profilerMemory: ProfilerMemory;
+    constructor(name: string) {//name: string, duration: number, filter: any) {
+        // profileType, duration, filter
+        /*resetMemory();
+        const disableTick = Number.isInteger(duration) ? Game.time + duration : false;
+        if (!Memory.profiler) {
+            Memory.profiler = {
+                map: {},
+                totalTime: 0,
+                enabledTick: Game.time + 1,
+                disableTick,
+                type: profileType,
+                filter,
+            };
+        }*/
+        this.profilerMemory = new ProfilerMemory(name);
+    }
+}
+
+export class ProfilerManager {
     public usedOnStart: number = 0;
     public enabled: boolean = false;
     public depth: number = 0;
     static Init() {
 
     }
+
+    setupProfiler() {
+        this.depth = 0;
+    }
 }
-
-let usedOnStart: number = 0;
-let enabled: boolean = false;
-let depth = 0;
-
-
-/*function AlreadyWrappedError() {
-  this.name = 'AlreadyWrappedError';
-  this.message = 'Error attempted to double wrap a function.';
-  this.stack = ((new Error())).stack;
-}
-
+/*
 function setupProfiler() {
   depth = 0; // reset depth, this needs to be done each tick.
   Game.profiler = {

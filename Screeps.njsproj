@@ -39,6 +39,7 @@
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\declarationFiles\" />
     <Folder Include="src\" />
   </ItemGroup>
   <ItemGroup>
@@ -47,13 +48,20 @@
     <Compile Include="src\version.js" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\declarationFiles\screeps.d.ts" />
+    <TypeScriptCompile Include="src\common.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\Error.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\declarationFiles\interfaces.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\Profiler.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\types.d.ts" />
+    <TypeScriptCompile Include="src\declarationFiles\types.d.ts" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

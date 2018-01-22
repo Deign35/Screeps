@@ -3,6 +3,12 @@
     "version": "0.2.0",
     "description": "Screeps",
     "main": "main.js",
+    "private": true,
+    "license": "(MIT OR Apache-2.0)",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Deign35/Screeps.git"
+    },
     "author": {
         "name": "Deign"
     },
@@ -14,11 +20,9 @@
         "grunt-contrib-nodeunit": "~0.4.1",
         "grunt-contrib-uglify": "~0.5.0",
         "grunt-file-append": "0.0.7",
-        "grunt-jsbeautifier": "^0.2.13",
-        "typed-screeps": "^2.1.0"
+        "grunt-jsbeautifier": "^0.2.13"
     },
     "dependencies": {
-        "@types/screeps": "^2.1.0",
         "grunt-screeps": "^1.4.0",
         "grunt-ts": "^6.0.0-beta.17",
         "typescript": "^2.6.2"

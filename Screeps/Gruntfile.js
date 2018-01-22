@@ -1,7 +1,7 @@
 ﻿module.exports = function (grunt) {
 
     var config = require('./.screeps.json');
-    var branch = config.branch;
+    var branch = 'Swarm0.2';//config.branch;
     var email = grunt.option('email') || config.email;
     var password = grunt.option('password') || config.password;
     var ptr = grunt.option('ptr') ? true : config.ptr;
